@@ -1,16 +1,23 @@
 # Журнал экспериментов Практики 2
 
-Файл ведёт OpenCode по вашим запросам. Агент записывает фактические результаты экспериментов и вносит изменения в связанные файлы. Свою оценку сообщайте ему в чате; вручную заполнять шаблон не нужно.
+Эксперименты выполнены рабочим агентом Codex по поручению «сделай всё, что сказано в README.md». В [Практике 1](../practice_01/prompts.md#журнал) пользователь уже разрешил замену OpenCode на Codex. Запросы ниже воспроизводят применённые техники; результаты — подготовленные артефакты и выполненные локальные проверки, а не независимые запуски модели или действующего API. Личная оценка студента и причины отказа **не получены из диалога**; замечания в колонке «Что отклонили» — выводы агента, не приписанные студенту.
 
-- Выбранный слабый артефакт Практики 1:
-- Что в нём нужно улучшить:
-- Как поймём, что изменение полезно:
+- Выбранный слабый артефакт Практики 1: [product_management.md](../practice_01/product_management.md#user-stories-и-acceptance-criteria).
+- Что в нём нужно улучшить: прежние критерии описывали результат общими словами и не различали факт из diff, требование к будущему прототипу и выполненную проверку. При неверной ссылке модели поведение также не было определено.
+- Как поймём, что изменение полезно: другой инженер сможет по тексту построить тест с конкретным входом, наблюдением и состоянием ошибки; каждый показанный риск можно сверить с diff, а ограничения по источникам и ручному решению видны в контракте.
 
 | Техника | Файл эксперимента | Изменённый файл Практики 1 | Конкретное изменение | Проверка | Что отклонили |
 |---|---|---|---|---|---|
-| Few-shot | [`few_shot/experiment.md`](few_shot/experiment.md) |  |  |  |  |
-| R.C.T.F. | [`rctf/experiment.md`](rctf/experiment.md) |  |  |  |  |
-| Chain of Verification | [`chain_of_verification/experiment.md`](chain_of_verification/experiment.md) |  |  |  |  |
-| Tree of Thoughts | [`tree_of_thoughts/experiment.md`](tree_of_thoughts/experiment.md) |  |  |  |  |
-| RAG | [`rag/experiment.md`](rag/experiment.md) |  |  |  |  |
-| ReAct | [`react/experiment.md`](react/experiment.md) |  |  |  |  |
+| Few-shot | [few_shot/experiment.md](few_shot/experiment.md) | [product_management.md, «Контракт черновика»](../practice_01/product_management.md#контракт-черновика-для-проверки) | Добавлены хороший/плохой образцы риска, место, проверка и статус «предложено» | `app/api.py:10` сверен с [diff](../practice_01/TRAINING_PR.diff) | Утверждение о фактическом ответе 400 без прогона |
+| R.C.T.F. | [rctf/experiment.md](rctf/experiment.md) | [product_management.md, «Ошибки входа и результата»](../practice_01/product_management.md#ошибки-входа-и-результата) | Таблица входных/модельных ошибок и Gherkin для смешанного ответа | Сопоставлено с [integration планом](../practice_01/tests_integration.md#integration-проверки) | Произвольный точный HTTP-код и лимит |
+| Chain of Verification | [chain_of_verification/experiment.md](chain_of_verification/experiment.md) | [product_management.md, «Контракт черновика»](../practice_01/product_management.md#контракт-черновика-для-проверки) | Разделены проверка существования строки, причинность и статус теста; добавлена неопределённость | Вопросы сверены с [diff](../practice_01/TRAINING_PR.diff) и [ADR](../practice_01/adr.md#решение) | Вывод, что совпадение строки доказывает дефект |
+| Tree of Thoughts | [tree_of_thoughts/experiment.md](tree_of_thoughts/experiment.md) | [product_management.md, «Ошибки»](../practice_01/product_management.md#ошибки-входа-и-результата), [ADR, «Решение»](../practice_01/adr.md#решение) | Из трёх вариантов выбран частичный отбор риска с объяснением; все неверные ссылки дают неопределённость | План [unit](../practice_01/tests_unit.md#unit-проверки) и [E2E](../practice_01/tests_e2e.md#e2e-проверки) | Сырой ответ с ложной ссылкой; потеря всех корректных рисков |
+| RAG | [rag/experiment.md](rag/experiment.md) | [product_management.md, «Основания требований»](../practice_01/product_management.md#основания-требований-и-открытые-решения) | Таблица источников разделяет правила кейса, факты diff и проектные предложения | Локальные ссылки на [README](../practice_01/README.md#задача-помощника), [diff](../practice_01/TRAINING_PR.diff) и [ADR](../practice_01/adr.md#решение) проверены | Неподтверждённые JSON, лимит и код ошибки |
+| ReAct | [react/experiment.md](react/experiment.md) | [ADR, «Решение»](../practice_01/adr.md#решение), [unit](../practice_01/tests_unit.md#unit-проверки), [integration](../practice_01/tests_integration.md#integration-проверки), [E2E](../practice_01/tests_e2e.md#e2e-проверки) | Согласованы три исхода ответа модели на всех уровнях проверки | `rg` по пяти файлам, `git diff --check`, `make step2` — успешно | Заявление о прохождении тестов отсутствующего API |
+
+## Сводная проверка
+
+- Ссылки каждой строки ведут к конкретному изменённому разделу Практики 1.
+- Требования, решение и планы проверок различают факт учебного diff и целевое поведение будущего прототипа.
+- `make step2` проверяет структуру файлов. Плановые HTTP/unit/integration/E2E сценарии не запускались: кода прототипа в материалах нет.
+- Оценка студента и замечания ревьюера ожидаются только из будущего диалога или PR; агент их не выдумывает.
