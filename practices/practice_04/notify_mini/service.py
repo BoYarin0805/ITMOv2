@@ -24,3 +24,10 @@ class SubscriptionStore:
             return False
         self._subscribers.remove(normalized)
         return True
+
+    def list_subscribers(self, prefix: str = "") -> list[str]:
+        """Вернуть отсортированную копию имён, отфильтрованную по префиксу."""
+        if not isinstance(prefix, str):
+            raise ValueError("prefix must be a string")
+        normalized = prefix.strip()
+        return sorted(name for name in self._subscribers if name.startswith(normalized))

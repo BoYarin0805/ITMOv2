@@ -37,3 +37,30 @@ class UnsubscribeTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 store.unsubscribe(name)
         self.assertTrue(store.unsubscribe("Bob"))
+
+
+class ListSubscribersTests(unittest.TestCase):
+    def test_sorted_copy(self) -> None:
+        store = SubscriptionStore()
+        store.subscribe("Zoe")
+        store.subscribe("Alice")
+        listed = store.list_subscribers()
+        self.assertEqual(listed, ["Alice", "Zoe"])
+        listed.append("Fake")
+        self.assertEqual(store.list_subscribers(), ["Alice", "Zoe"])
+
+    def test_prefix_is_trimmed_and_case_sensitive(self) -> None:
+        store = SubscriptionStore()
+        for name in ("Anna", "Anya", "Bob", "anna"):
+            store.subscribe(name)
+        self.assertEqual(store.list_subscribers(" An "), ["Anna", "Anya"])
+        self.assertEqual(store.list_subscribers("a"), ["anna"])
+        self.assertEqual(store.list_subscribers("Missing"), [])
+
+    def test_invalid_prefix_keeps_state(self) -> None:
+        store = SubscriptionStore()
+        store.subscribe("Bob")
+        for prefix in (None, 3):
+            with self.subTest(prefix=prefix), self.assertRaises(ValueError):
+                store.list_subscribers(prefix)
+        self.assertFalse(store.subscribe("Bob"))
