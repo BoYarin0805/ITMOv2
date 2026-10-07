@@ -1,0 +1,7 @@
+[
+  {
+    "name": "notify-tdd",
+    "description": "Проверка фич A и B сервиса Notify Mini отдельными наборами тестов перед общей проверкой.",
+    "location": "/home/boyarin/ITMOv2/practices/practice_04/notify_mini/.opencode/skills/notify-tdd/SKILL.md"
+  }
+]

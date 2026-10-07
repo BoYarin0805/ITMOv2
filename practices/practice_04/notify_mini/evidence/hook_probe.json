@@ -1,0 +1,12 @@
+{
+  "pass": [
+    "[post-edit check: PASS]",
+    "Ran 8 tests in 0.001s",
+    "OK"
+  ],
+  "fail": [
+    "[post-edit check: FAIL]",
+    "Ran 9 tests in 0.001s",
+    "FAILED (failures=1)"
+  ]
+}
