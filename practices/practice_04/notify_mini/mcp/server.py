@@ -22,8 +22,13 @@ TOOL = {
 def tool_call(params: dict) -> dict:
     arguments = params.get("arguments", {})
     suite = arguments.get("suite") if isinstance(arguments, dict) else None
-    if params.get("name") != "run_checks" or suite not in ("A", "B", "all"):
-        return {"content": [{"type": "text", "text": "Ошибка: suite должен быть A, B или all"}], "isError": True}
+    if (
+        params.get("name") != "run_checks"
+        or not isinstance(arguments, dict)
+        or set(arguments) != {"suite"}
+        or suite not in ("A", "B", "all")
+    ):
+        return {"content": [{"type": "text", "text": "Ошибка: укажите только suite со значением A, B или all"}], "isError": True}
     command = ["sh", "scripts/check.sh"] if suite == "all" else [sys.executable, "-B", ".opencode/skills/notify-tdd/check_feature.py", suite]
     try:
         result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=30, check=False)

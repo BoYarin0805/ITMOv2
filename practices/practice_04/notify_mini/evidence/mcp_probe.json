@@ -19,7 +19,16 @@
     "content": [
       {
         "type": "text",
-        "text": "Ошибка: suite должен быть A, B или all"
+        "text": "Ошибка: укажите только suite со значением A, B или all"
+      }
+    ],
+    "isError": true
+  },
+  "extra_argument": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Ошибка: укажите только suite со значением A, B или all"
       }
     ],
     "isError": true

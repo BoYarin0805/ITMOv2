@@ -25,12 +25,14 @@ def main() -> int:
         listed = exchange(process, {"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
         good = exchange(process, {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "run_checks", "arguments": {"suite": "all"}}})
         bad = exchange(process, {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "run_checks", "arguments": {"suite": "wrong"}}})
+        extra = exchange(process, {"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "run_checks", "arguments": {"suite": "all", "unexpected": True}}})
         assert init["result"]["serverInfo"]["name"] == "notify-checks"
         assert listed["result"]["tools"][0]["name"] == "run_checks"
         assert good["result"]["isError"] is False
         assert "OK" in good["result"]["content"][0]["text"]
         assert bad["result"]["isError"] is True
-        print(json.dumps({"initialize": init["result"]["serverInfo"], "tools": [tool["name"] for tool in listed["result"]["tools"]], "success": good["result"], "invalid_input": bad["result"]}, ensure_ascii=False, indent=2))
+        assert extra["result"]["isError"] is True
+        print(json.dumps({"initialize": init["result"]["serverInfo"], "tools": [tool["name"] for tool in listed["result"]["tools"]], "success": good["result"], "invalid_input": bad["result"], "extra_argument": extra["result"]}, ensure_ascii=False, indent=2))
         return 0
     finally:
         process.terminate()

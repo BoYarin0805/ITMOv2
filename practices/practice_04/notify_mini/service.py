@@ -5,11 +5,14 @@ class SubscriptionStore:
     def __init__(self) -> None:
         self._subscribers: set[str] = set()
 
-    def subscribe(self, name: str) -> bool:
-        """Добавить имя; вернуть False, если оно уже было."""
+    def _normalize_name(self, name: str) -> str:
         if not isinstance(name, str) or not name.strip():
             raise ValueError("name must be a non-empty string")
-        normalized = name.strip()
+        return name.strip()
+
+    def subscribe(self, name: str) -> bool:
+        """Добавить имя; вернуть False, если оно уже было."""
+        normalized = self._normalize_name(name)
         if normalized in self._subscribers:
             return False
         self._subscribers.add(normalized)
@@ -17,9 +20,7 @@ class SubscriptionStore:
 
     def unsubscribe(self, name: str) -> bool:
         """Удалить имя; вернуть False, если подписчик отсутствует."""
-        if not isinstance(name, str) or not name.strip():
-            raise ValueError("name must be a non-empty string")
-        normalized = name.strip()
+        normalized = self._normalize_name(name)
         if normalized not in self._subscribers:
             return False
         self._subscribers.remove(normalized)
