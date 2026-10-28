@@ -1,0 +1,16 @@
+--- before.md
++++ after.md
+@@ -15,3 +15,13 @@
+ 
+ ## Risks / Trade-offs
+ При ошибке прогноза подсказка недоступна; текущая погода остаётся доступной.
++
++## Interaction diagram
++
++```mermaid
++flowchart LR
++    Provider[Open-Meteo] --> API[Существующий API прогноза]
++    API --> Client[Клиент]
++    Client --> Rain[Выделение дождливого часа]
++    Rain --> Hint[Текстовая подсказка]
++```

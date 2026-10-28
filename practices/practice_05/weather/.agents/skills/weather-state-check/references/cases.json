@@ -1,0 +1,20 @@
+[
+  {"code":0,"day":1,"kind":"clear","daytime":"День","icon":"☀️"},
+  {"code":0,"day":0,"kind":"clear","daytime":"Ночь","icon":"🌙"},
+  {"code":1,"day":1,"kind":"clear"},
+  {"code":2,"day":1,"kind":"cloudy"},
+  {"code":3,"day":0,"kind":"cloudy","daytime":"Ночь"},
+  {"code":45,"day":1,"kind":"fog"},
+  {"code":48,"day":0,"kind":"fog"},
+  {"code":51,"day":1,"kind":"rain"},
+  {"code":57,"day":0,"kind":"rain"},
+  {"code":61,"day":1,"kind":"rain"},
+  {"code":67,"day":0,"kind":"rain"},
+  {"code":82,"day":1,"kind":"rain"},
+  {"code":71,"day":0,"kind":"snow","daytime":"Ночь","icon":"❄️"},
+  {"code":77,"day":1,"kind":"snow"},
+  {"code":86,"day":0,"kind":"snow"},
+  {"code":95,"day":1,"kind":"storm"},
+  {"code":99,"day":0,"kind":"storm"},
+  {"code":999,"day":1,"kind":"unknown"}
+]

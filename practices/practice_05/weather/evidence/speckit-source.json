@@ -1,0 +1,7 @@
+{
+  "framework": "GitHub Spec Kit",
+  "version": "v0.0.90",
+  "url": "https://github.com/github/spec-kit/releases/download/v0.0.90/spec-kit-template-codex-sh-v0.0.90.zip",
+  "sha256": "5de8980789b6c2bad497807243dc5a7bccc25fb1b55cae9ac582114b48586756",
+  "installation": "Official Codex sh release archive, project-local extraction; no global CLI installation."
+}

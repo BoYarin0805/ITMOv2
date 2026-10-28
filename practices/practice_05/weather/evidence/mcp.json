@@ -1,0 +1,343 @@
+{
+  "time": "2026-10-26T15:57:57.084327+00:00",
+  "transport": "stdio",
+  "client": "weather-demo-client",
+  "status": "PASS",
+  "initialize": {
+    "protocolVersion": "2025-03-26",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "weather-practice",
+      "version": "1.0.0"
+    }
+  },
+  "tools": [
+    {
+      "name": "search_city",
+      "description": "Найти города по названию; при совпадениях предложить пользователю выбрать регион/страну.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "get_weather",
+      "description": "Получить реальную текущую погоду по координатам выбранного результата search_city.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "latitude": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+          }
+        },
+        "required": [
+          "name",
+          "latitude",
+          "longitude"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": true
+      }
+    }
+  ],
+  "invalid_input": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Некорректные координаты города."
+      }
+    ],
+    "isError": true
+  },
+  "selected_city": {
+    "name": "Выборг",
+    "country": "Россия",
+    "region": "Ленинградская область",
+    "latitude": 60.70763,
+    "longitude": 28.75283
+  },
+  "weather": {
+    "city": {
+      "id": null,
+      "name": "Выборг",
+      "latitude": 60.70763,
+      "longitude": 28.75283
+    },
+    "current": {
+      "temperature_2m": 10.2,
+      "apparent_temperature": 7.9,
+      "relative_humidity_2m": 95,
+      "weather_code": 61,
+      "wind_speed_10m": 4.3,
+      "is_day": 0,
+      "time": "2026-10-26T18:45",
+      "description": "Дождь"
+    },
+    "units": {
+      "time": "iso8601",
+      "interval": "seconds",
+      "temperature_2m": "°C",
+      "apparent_temperature": "°C",
+      "relative_humidity_2m": "%",
+      "weather_code": "wmo code",
+      "wind_speed_10m": "m/s",
+      "is_day": ""
+    },
+    "timezone": "Europe/Moscow",
+    "source": {
+      "name": "Open-Meteo",
+      "url": "https://open-meteo.com/"
+    }
+  },
+  "messages": [
+    {
+      "direction": "client→server",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "protocolVersion": "2025-03-26",
+          "capabilities": {},
+          "clientInfo": {
+            "name": "weather-demo-client",
+            "version": "1.0.0"
+          }
+        }
+      }
+    },
+    {
+      "direction": "server→client",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "protocolVersion": "2025-03-26",
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          },
+          "serverInfo": {
+            "name": "weather-practice",
+            "version": "1.0.0"
+          }
+        }
+      }
+    },
+    {
+      "direction": "client→server",
+      "message": {
+        "jsonrpc": "2.0",
+        "method": "notifications/initialized"
+      }
+    },
+    {
+      "direction": "client→server",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "method": "tools/list",
+        "params": {}
+      }
+    },
+    {
+      "direction": "server→client",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "result": {
+          "tools": [
+            {
+              "name": "search_city",
+              "description": "Найти города по названию; при совпадениях предложить пользователю выбрать регион/страну.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "additionalProperties": false
+              },
+              "annotations": {
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "openWorldHint": true
+              }
+            },
+            {
+              "name": "get_weather",
+              "description": "Получить реальную текущую погоду по координатам выбранного результата search_city.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  }
+                },
+                "required": [
+                  "name",
+                  "latitude",
+                  "longitude"
+                ],
+                "additionalProperties": false
+              },
+              "annotations": {
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "openWorldHint": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "direction": "client→server",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "method": "tools/call",
+        "params": {
+          "name": "get_weather",
+          "arguments": {
+            "name": "Ошибка",
+            "latitude": 999,
+            "longitude": 0
+          }
+        }
+      }
+    },
+    {
+      "direction": "server→client",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Некорректные координаты города."
+            }
+          ],
+          "isError": true
+        }
+      }
+    },
+    {
+      "direction": "client→server",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "method": "tools/call",
+        "params": {
+          "name": "search_city",
+          "arguments": {
+            "query": "Выборг"
+          }
+        }
+      }
+    },
+    {
+      "direction": "server→client",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"cities\": [{\"name\": \"Выборг\", \"country\": \"Россия\", \"region\": \"Ленинградская область\", \"latitude\": 60.70763, \"longitude\": 28.75283}]}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    },
+    {
+      "direction": "client→server",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "method": "tools/call",
+        "params": {
+          "name": "get_weather",
+          "arguments": {
+            "name": "Выборг",
+            "latitude": 60.70763,
+            "longitude": 28.75283
+          }
+        }
+      }
+    },
+    {
+      "direction": "server→client",
+      "message": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"city\": {\"id\": null, \"name\": \"Выборг\", \"latitude\": 60.70763, \"longitude\": 28.75283}, \"current\": {\"temperature_2m\": 10.2, \"apparent_temperature\": 7.9, \"relative_humidity_2m\": 95, \"weather_code\": 61, \"wind_speed_10m\": 4.3, \"is_day\": 0, \"time\": \"2026-10-26T18:45\", \"description\": \"Дождь\"}, \"units\": {\"time\": \"iso8601\", \"interval\": \"seconds\", \"temperature_2m\": \"°C\", \"apparent_temperature\": \"°C\", \"relative_humidity_2m\": \"%\", \"weather_code\": \"wmo code\", \"wind_speed_10m\": \"m/s\", \"is_day\": \"\"}, \"timezone\": \"Europe/Moscow\", \"source\": {\"name\": \"Open-Meteo\", \"url\": \"https://open-meteo.com/\"}}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    }
+  ]
+}

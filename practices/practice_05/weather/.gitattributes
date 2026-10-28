@@ -1,0 +1,2 @@
+# Unified diff context uses a single space on blank context lines.
+evidence/openspec-customization/change.diff -whitespace
