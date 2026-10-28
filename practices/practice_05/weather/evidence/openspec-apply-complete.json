@@ -1,0 +1,76 @@
+{
+  "changeName": "hourly-forecast",
+  "changeDir": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast",
+  "schemaName": "spec-driven",
+  "contextFiles": {
+    "proposal": [
+      "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/proposal.md"
+    ],
+    "specs": [
+      "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/specs/hourly-forecast/spec.md"
+    ],
+    "design": [
+      "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/design.md"
+    ],
+    "tasks": [
+      "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md"
+    ]
+  },
+  "progress": {
+    "total": 6,
+    "complete": 6,
+    "remaining": 0
+  },
+  "tasks": [
+    {
+      "id": "1",
+      "description": "1.1 Добавить независимый запрос и нормализацию 24 часов; тесты полуночи, точного часа, DST, пропусков и неверных значений проходят.",
+      "done": true,
+      "sourcePath": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md",
+      "line": 4
+    },
+    {
+      "id": "2",
+      "description": "1.2 Добавить `/api/forecast` с прежними параметрами города; HTTP-тесты 200/400/502 и совместимости `/api/weather` проходят; контракт записан в docs/API.md.",
+      "done": true,
+      "sourcePath": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md",
+      "line": 5
+    },
+    {
+      "id": "3",
+      "description": "2.1 Добавить почасовую ленту и режим прогнозного часа; проверки сохранения текущих чисел и возврата к «Сейчас» проходят.",
+      "done": true,
+      "sourcePath": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md",
+      "line": 8
+    },
+    {
+      "id": "4",
+      "description": "2.2 Разделить состояния загрузки/ошибки и игнорировать старые ответы; тесты отказа и гонок проходят.",
+      "done": true,
+      "sourcePath": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md",
+      "line": 9
+    },
+    {
+      "id": "5",
+      "description": "3.1 Выполнить полный runner и браузерные проверки основного, ошибочного и прежнего сценариев; сохранить результаты и снимки интерфейса.",
+      "done": true,
+      "sourcePath": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md",
+      "line": 12
+    },
+    {
+      "id": "6",
+      "description": "3.2 Выполнить независимое ревью требований и результата, устранить подтверждённые проблемы; сохранить замечания и решения.",
+      "done": true,
+      "sourcePath": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/hourly-forecast/tasks.md",
+      "line": 13
+    }
+  ],
+  "taskTrackingConfigured": true,
+  "state": "all_done",
+  "instruction": "All tracked tasks are complete.\nReview or verify the change as appropriate before archiving.",
+  "context": "Документы на русском; сохранять независимость текущей погоды, прогноза и демонстрации.\n",
+  "root": {
+    "path": "/home/boyarin/ITMOv2/practices/practice_05/weather",
+    "source": "nearest"
+  }
+}

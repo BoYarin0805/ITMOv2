@@ -1,0 +1,13 @@
+{
+  "name": "weather-practice-five",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "openspec": "openspec",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@fission-ai/openspec": "1.14.1",
+    "@playwright/test": "1.56.1"
+  }
+}

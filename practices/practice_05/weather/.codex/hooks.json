@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "apply_patch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONDONTWRITEBYTECODE=1 python3 /home/boyarin/ITMOv2/practices/practice_05/weather/scripts/post_edit.py",
+            "timeout": 60,
+            "additionalContextLimit": 2000
+          }
+        ]
+      }
+    ]
+  }
+}
