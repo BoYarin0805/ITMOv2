@@ -1,0 +1,10 @@
+{
+  "raw_file": "planner_response_explicit.jsonl",
+  "decision": {
+    "tool": "read_file",
+    "arguments": {
+      "path": "files/alice/receipt.txt"
+    }
+  },
+  "errors": []
+}

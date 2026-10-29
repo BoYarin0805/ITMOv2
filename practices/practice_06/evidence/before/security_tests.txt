@@ -1,0 +1,218 @@
+test_assistant_context_is_owner_scoped (test_security.SecurityRegressionTest.test_assistant_context_is_owner_scoped) ... FAIL
+test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) ... 
+  test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='read_file', arguments={'path': 'files/bob/receipt.txt'}) ... FAIL
+  test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='read_file', arguments={'path': '../private/operator-note.txt'}) ... ERROR
+  test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='export_profiles', arguments={}) ... FAIL
+  test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='delete_tree', arguments={'path': 'files/alice'}) ... FAIL
+test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) ... ERROR
+test_customer_cannot_use_role_header_for_admin_export (test_security.SecurityRegressionTest.test_customer_cannot_use_role_header_for_admin_export) ... FAIL
+test_customer_sees_only_own_orders (test_security.SecurityRegressionTest.test_customer_sees_only_own_orders) ... FAIL
+test_debug_logs_are_staff_only_and_redacted (test_security.SecurityRegressionTest.test_debug_logs_are_staff_only_and_redacted) ... FAIL
+test_files_are_scoped_to_the_session_owner (test_security.SecurityRegressionTest.test_files_are_scoped_to_the_session_owner) ... FAIL
+test_internal_errors_are_not_exposed (test_security.SecurityRegressionTest.test_internal_errors_are_not_exposed) ... ERROR
+test_price_comes_from_the_catalog (test_security.SecurityRegressionTest.test_price_comes_from_the_catalog) ... FAIL
+test_profile_requires_a_session (test_security.SecurityRegressionTest.test_profile_requires_a_session) ... FAIL
+test_review_html_is_escaped (test_security.SecurityRegressionTest.test_review_html_is_escaped) ... FAIL
+test_reviews_require_a_valid_authenticated_payload (test_security.SecurityRegressionTest.test_reviews_require_a_valid_authenticated_payload) ... FAIL
+test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) ... 
+  test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) (path='/profile?id=1%20OR%201=1') ... FAIL
+  test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) (path='/profile?id=not-a-number') ... ERROR
+test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) ... FAIL
+test_staff_can_export_through_the_assistant (test_security.SecurityRegressionTest.test_staff_can_export_through_the_assistant) ... ok
+
+======================================================================
+ERROR: test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='read_file', arguments={'path': '../private/operator-note.txt'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 133, in test_assistant_tools_enforce_server_side_authorization
+    status, _ = self.request("POST", "/assistant/execute", {"decision": decision}, auth)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 20, in request
+    return self.shop.dispatch(method, path, body or {}, headers or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/service.py", line 103, in dispatch
+    return 200, {"content": self.sandbox.read(arguments["path"])}
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/sandbox.py", line 28, in read
+    return self.path(name).read_text(encoding="utf-8")
+           ^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/sandbox.py", line 24, in path
+    raise ValueError("outside exercise sandbox")
+ValueError: outside exercise sandbox
+
+======================================================================
+ERROR: test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 135, in test_assistant_tools_enforce_server_side_authorization
+    status, result = self.request("POST", "/assistant/execute", {
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 20, in request
+    return self.shop.dispatch(method, path, body or {}, headers or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/service.py", line 103, in dispatch
+    return 200, {"content": self.sandbox.read(arguments["path"])}
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/sandbox.py", line 28, in read
+    return self.path(name).read_text(encoding="utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/itmo-practice-06-vtt937w8/files/alice/receipt.txt'
+
+======================================================================
+ERROR: test_internal_errors_are_not_exposed (test_security.SecurityRegressionTest.test_internal_errors_are_not_exposed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 107, in test_internal_errors_are_not_exposed
+    status, result = self.request("GET", "/profile?id=not-a-number", headers=self.login())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 20, in request
+    return self.shop.dispatch(method, path, body or {}, headers or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/service.py", line 57, in dispatch
+    return 200, self.rows(f"SELECT * FROM profiles WHERE id = {query.get('id', '1')}")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/service.py", line 39, in rows
+    return [dict(row) for row in self.db.execute(query)]
+                                 ^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: a
+
+======================================================================
+ERROR: test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) (path='/profile?id=not-a-number')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 41, in test_sql_injection_cannot_return_other_profiles
+    status, result = self.request("GET", path, headers=auth)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 20, in request
+    return self.shop.dispatch(method, path, body or {}, headers or {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/service.py", line 57, in dispatch
+    return 200, self.rows(f"SELECT * FROM profiles WHERE id = {query.get('id', '1')}")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/service.py", line 39, in rows
+    return [dict(row) for row in self.db.execute(query)]
+                                 ^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: a
+
+======================================================================
+FAIL: test_assistant_context_is_owner_scoped (test_security.SecurityRegressionTest.test_assistant_context_is_owner_scoped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 117, in test_assistant_context_is_owner_scoped
+    self.assertEqual(self.request("GET", "/assistant/context?order_id=2", headers=auth)[0], 403)
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='read_file', arguments={'path': 'files/bob/receipt.txt'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 134, in test_assistant_tools_enforce_server_side_authorization
+    self.assertIn(status, (400, 403))
+AssertionError: 200 not found in (400, 403)
+
+======================================================================
+FAIL: test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='export_profiles', arguments={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 134, in test_assistant_tools_enforce_server_side_authorization
+    self.assertIn(status, (400, 403))
+AssertionError: 200 not found in (400, 403)
+
+======================================================================
+FAIL: test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) (tool='delete_tree', arguments={'path': 'files/alice'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 134, in test_assistant_tools_enforce_server_side_authorization
+    self.assertIn(status, (400, 403))
+AssertionError: 200 not found in (400, 403)
+
+======================================================================
+FAIL: test_customer_cannot_use_role_header_for_admin_export (test_security.SecurityRegressionTest.test_customer_cannot_use_role_header_for_admin_export)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 56, in test_customer_cannot_use_role_header_for_admin_export
+    self.assertEqual(self.request("GET", "/admin/export", headers=auth)[0], 403)
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_customer_sees_only_own_orders (test_security.SecurityRegressionTest.test_customer_sees_only_own_orders)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 52, in test_customer_sees_only_own_orders
+    self.assertTrue(all(order["owner"] == 1 for order in orders))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_debug_logs_are_staff_only_and_redacted (test_security.SecurityRegressionTest.test_debug_logs_are_staff_only_and_redacted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 80, in test_debug_logs_are_staff_only_and_redacted
+    self.assertEqual(self.request("GET", "/debug/logs")[0], 401)
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_files_are_scoped_to_the_session_owner (test_security.SecurityRegressionTest.test_files_are_scoped_to_the_session_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 62, in test_files_are_scoped_to_the_session_owner
+    self.assertEqual(self.request("GET", "/files?user=bob&path=receipt.txt", headers=auth)[0], 403)
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_price_comes_from_the_catalog (test_security.SecurityRegressionTest.test_price_comes_from_the_catalog)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 75, in test_price_comes_from_the_catalog
+    self.assertEqual(order["price"], 5000)
+AssertionError: 1 != 5000
+
+======================================================================
+FAIL: test_profile_requires_a_session (test_security.SecurityRegressionTest.test_profile_requires_a_session)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 34, in test_profile_requires_a_session
+    self.assertEqual(self.request("GET", "/profile?id=1")[0], 401)
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_review_html_is_escaped (test_security.SecurityRegressionTest.test_review_html_is_escaped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 103, in test_review_html_is_escaped
+    self.assertNotIn("<script>", html)
+AssertionError: '<script>' unexpectedly found in "<html><body><p><script>alert('xss')</script></p></body></html>"
+
+======================================================================
+FAIL: test_reviews_require_a_valid_authenticated_payload (test_security.SecurityRegressionTest.test_reviews_require_a_valid_authenticated_payload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 89, in test_reviews_require_a_valid_authenticated_payload
+    self.assertEqual(
+AssertionError: 201 != 401
+
+======================================================================
+FAIL: test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) (path='/profile?id=1%20OR%201=1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 43, in test_sql_injection_cannot_return_other_profiles
+    self.assertNotIn("TEST_BOB", self.json_text(result))
+AssertionError: 'TEST_BOB' unexpectedly found in '[{"id": 1, "name": "TEST_ALICE", "email": "alice@example.invalid", "address": "TEST_ADDRESS_A"}, {"id": 2, "name": "TEST_BOB", "email": "bob@example.invalid", "address": "TEST_ADDRESS_B"}]'
+
+======================================================================
+FAIL: test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/opencode/practice06-base/practices/practice_06/lab/test_security.py", line 46, in test_sql_injection_cannot_return_other_profiles
+    self.assertNotIn("TEST_BOB", self.json_text(result))
+AssertionError: 'TEST_BOB' unexpectedly found in '[{"id": 1, "name": "TEST_ALICE", "email": "alice@example.invalid", "address": "TEST_ADDRESS_A"}, {"id": 2, "name": "TEST_BOB", "email": "bob@example.invalid", "address": "TEST_ADDRESS_B"}]'
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.031s
+
+FAILED (failures=14, errors=4)

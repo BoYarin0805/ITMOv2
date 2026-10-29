@@ -1,0 +1,35 @@
+Standard library only: ready
+test_health_and_not_found (test_http.HttpTest.test_health_and_not_found) ... ok
+test_login_and_purchase_over_http (test_http.HttpTest.test_login_and_purchase_over_http) ... ok
+test_transport_only_binds_loopback (test_http.HttpTest.test_transport_only_binds_loopback) ... ok
+test_assistant_context_is_owner_scoped (test_security.SecurityRegressionTest.test_assistant_context_is_owner_scoped) ... ok
+test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) ... ok
+test_customer_cannot_use_role_header_for_admin_export (test_security.SecurityRegressionTest.test_customer_cannot_use_role_header_for_admin_export) ... ok
+test_customer_sees_only_own_orders (test_security.SecurityRegressionTest.test_customer_sees_only_own_orders) ... ok
+test_debug_logs_are_staff_only_and_redacted (test_security.SecurityRegressionTest.test_debug_logs_are_staff_only_and_redacted) ... ok
+test_files_are_scoped_to_the_session_owner (test_security.SecurityRegressionTest.test_files_are_scoped_to_the_session_owner) ... ok
+test_internal_errors_are_not_exposed (test_security.SecurityRegressionTest.test_internal_errors_are_not_exposed) ... ok
+test_price_comes_from_the_catalog (test_security.SecurityRegressionTest.test_price_comes_from_the_catalog) ... ok
+test_profile_requires_a_session (test_security.SecurityRegressionTest.test_profile_requires_a_session) ... ok
+test_review_html_is_escaped (test_security.SecurityRegressionTest.test_review_html_is_escaped) ... ok
+test_reviews_require_a_valid_authenticated_payload (test_security.SecurityRegressionTest.test_reviews_require_a_valid_authenticated_payload) ... ok
+test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) ... ok
+test_staff_can_export_through_the_assistant (test_security.SecurityRegressionTest.test_staff_can_export_through_the_assistant) ... ok
+test_delete_of_fixture_root_stays_inside_exercise (test_service.SandboxTest.test_delete_of_fixture_root_stays_inside_exercise) ... ok
+test_external_directory_cannot_be_deleted (test_service.SandboxTest.test_external_directory_cannot_be_deleted) ... ok
+test_parent_paths_cannot_escape_exercise (test_service.SandboxTest.test_parent_paths_cannot_escape_exercise) ... ok
+test_symlink_cannot_escape_exercise (test_service.SandboxTest.test_symlink_cannot_escape_exercise) ... ok
+test_assistant_can_return_own_receipt (test_service.ShopTest.test_assistant_can_return_own_receipt) ... ok
+test_customer_can_buy_at_catalog_price (test_service.ShopTest.test_customer_can_buy_at_catalog_price) ... ok
+test_health_and_catalog (test_service.ShopTest.test_health_and_catalog) ... ok
+test_own_profile_and_receipt (test_service.ShopTest.test_own_profile_and_receipt) ... ok
+test_review_can_be_submitted_and_viewed (test_service.ShopTest.test_review_can_be_submitted_and_viewed) ... ok
+test_staff_can_export_with_staff_session (test_service.ShopTest.test_staff_can_export_with_staff_session) ... ok
+test_tokens_identify_distinct_users (test_service.ShopTest.test_tokens_identify_distinct_users) ... ok
+test_unknown_product_rejected (test_service.ShopTest.test_unknown_product_rejected) ... ok
+test_wrong_password_rejected (test_service.ShopTest.test_wrong_password_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.589s
+
+OK
