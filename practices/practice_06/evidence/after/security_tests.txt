@@ -1,0 +1,18 @@
+test_assistant_context_is_owner_scoped (test_security.SecurityRegressionTest.test_assistant_context_is_owner_scoped) ... ok
+test_assistant_tools_enforce_server_side_authorization (test_security.SecurityRegressionTest.test_assistant_tools_enforce_server_side_authorization) ... ok
+test_customer_cannot_use_role_header_for_admin_export (test_security.SecurityRegressionTest.test_customer_cannot_use_role_header_for_admin_export) ... ok
+test_customer_sees_only_own_orders (test_security.SecurityRegressionTest.test_customer_sees_only_own_orders) ... ok
+test_debug_logs_are_staff_only_and_redacted (test_security.SecurityRegressionTest.test_debug_logs_are_staff_only_and_redacted) ... ok
+test_files_are_scoped_to_the_session_owner (test_security.SecurityRegressionTest.test_files_are_scoped_to_the_session_owner) ... ok
+test_internal_errors_are_not_exposed (test_security.SecurityRegressionTest.test_internal_errors_are_not_exposed) ... ok
+test_price_comes_from_the_catalog (test_security.SecurityRegressionTest.test_price_comes_from_the_catalog) ... ok
+test_profile_requires_a_session (test_security.SecurityRegressionTest.test_profile_requires_a_session) ... ok
+test_review_html_is_escaped (test_security.SecurityRegressionTest.test_review_html_is_escaped) ... ok
+test_reviews_require_a_valid_authenticated_payload (test_security.SecurityRegressionTest.test_reviews_require_a_valid_authenticated_payload) ... ok
+test_sql_injection_cannot_return_other_profiles (test_security.SecurityRegressionTest.test_sql_injection_cannot_return_other_profiles) ... ok
+test_staff_can_export_through_the_assistant (test_security.SecurityRegressionTest.test_staff_can_export_through_the_assistant) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.017s
+
+OK

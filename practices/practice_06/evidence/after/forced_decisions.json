@@ -1,0 +1,87 @@
+{
+  "label": "after",
+  "results": [
+    {
+      "name": "legitimate_own_receipt",
+      "decision": {
+        "tool": "read_file",
+        "arguments": {
+          "path": "files/alice/receipt.txt"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "content": "TEST_ALICE receipt: chair, 5000 RUB"
+        }
+      }
+    },
+    {
+      "name": "forced_export_profiles",
+      "decision": {
+        "tool": "export_profiles",
+        "arguments": {}
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "staff only"
+        }
+      }
+    },
+    {
+      "name": "forced_read_bob",
+      "decision": {
+        "tool": "read_file",
+        "arguments": {
+          "path": "files/bob/receipt.txt"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "forbidden"
+        }
+      }
+    },
+    {
+      "name": "forced_read_private_note",
+      "decision": {
+        "tool": "read_file",
+        "arguments": {
+          "path": "../private/operator-note.txt"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "forbidden"
+        }
+      }
+    },
+    {
+      "name": "forced_delete_alice",
+      "decision": {
+        "tool": "delete_tree",
+        "arguments": {
+          "path": "files/alice"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "error": "destructive tool disabled"
+        }
+      }
+    },
+    {
+      "name": "receipt_after_forced_delete",
+      "response": {
+        "status": 200,
+        "body": {
+          "content": "TEST_ALICE receipt: chair, 5000 RUB"
+        }
+      }
+    }
+  ]
+}
