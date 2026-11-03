@@ -1,0 +1,8 @@
+test_invalid_name_keeps_state (tests.test_service.UnsubscribeTests.test_invalid_name_keeps_state) ... ok
+test_remove_existing_name_once (tests.test_service.UnsubscribeTests.test_remove_existing_name_once) ... ok
+test_unknown_name_does_not_remove_others (tests.test_service.UnsubscribeTests.test_unknown_name_does_not_remove_others) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

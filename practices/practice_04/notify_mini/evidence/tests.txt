@@ -1,0 +1,13 @@
+test_invalid_prefix_keeps_state (test_service.ListSubscribersTests.test_invalid_prefix_keeps_state) ... ok
+test_prefix_is_trimmed_and_case_sensitive (test_service.ListSubscribersTests.test_prefix_is_trimmed_and_case_sensitive) ... ok
+test_sorted_copy (test_service.ListSubscribersTests.test_sorted_copy) ... ok
+test_invalid_name (test_service.SubscribeTests.test_invalid_name) ... ok
+test_subscribe_once (test_service.SubscribeTests.test_subscribe_once) ... ok
+test_invalid_name_keeps_state (test_service.UnsubscribeTests.test_invalid_name_keeps_state) ... ok
+test_remove_existing_name_once (test_service.UnsubscribeTests.test_remove_existing_name_once) ... ok
+test_unknown_name_does_not_remove_others (test_service.UnsubscribeTests.test_unknown_name_does_not_remove_others) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK

@@ -1,0 +1,6 @@
+┌  MCP Servers
+│
+●  ✓ notify_checks connected
+│      python3 mcp/server.py
+│
+└  1 server(s)
