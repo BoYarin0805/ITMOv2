@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Weather favorites v1",
+  "type": "object",
+  "required": ["version", "cities"],
+  "properties": {
+    "version": {"const": 1},
+    "cities": {"type": "array", "maxItems": 5, "items": {
+      "type": "object", "required": ["id", "name", "latitude", "longitude"],
+      "properties": {
+        "id": {"type": "string"}, "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "latitude": {"type": "number", "minimum": -90, "maximum": 90},
+        "longitude": {"type": "number", "minimum": -180, "maximum": 180}
+      }
+    }}}
+  }
+}

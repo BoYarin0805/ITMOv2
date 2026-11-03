@@ -1,0 +1,67 @@
+{
+  "time": "2026-10-28T22:30:00.965Z",
+  "browser": "141.0.7390.37",
+  "results": [
+    {
+      "name": "spring",
+      "error": null,
+      "mediaError": null,
+      "readyState": 4,
+      "currentTime": 0.810112,
+      "width": 960,
+      "height": 540,
+      "canPlay": "probably"
+    },
+    {
+      "name": "summer",
+      "error": null,
+      "mediaError": null,
+      "readyState": 4,
+      "currentTime": 0.803122,
+      "width": 960,
+      "height": 540,
+      "canPlay": "probably"
+    },
+    {
+      "name": "autumn",
+      "error": null,
+      "mediaError": null,
+      "readyState": 4,
+      "currentTime": 0.803473,
+      "width": 960,
+      "height": 540,
+      "canPlay": "probably"
+    },
+    {
+      "name": "winter",
+      "error": null,
+      "mediaError": null,
+      "readyState": 4,
+      "currentTime": 0.808792,
+      "width": 960,
+      "height": 540,
+      "canPlay": "probably"
+    },
+    {
+      "name": "rain",
+      "error": null,
+      "mediaError": null,
+      "readyState": 4,
+      "currentTime": 0.803979,
+      "width": 960,
+      "height": 540,
+      "canPlay": "probably"
+    },
+    {
+      "name": "night",
+      "error": null,
+      "mediaError": null,
+      "readyState": 4,
+      "currentTime": 0.802478,
+      "width": 960,
+      "height": 540,
+      "canPlay": "probably"
+    }
+  ],
+  "status": "PASS"
+}

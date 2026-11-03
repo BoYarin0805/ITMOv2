@@ -1,0 +1,7 @@
+[mcp_servers.weather]
+command = "python3"
+args = ["/home/boyarin/ITMOv2/practices/practice_05/weather/mcp_server.py"]
+cwd = "/home/boyarin/ITMOv2/practices/practice_05/weather"
+env = { PYTHONDONTWRITEBYTECODE = "1" }
+startup_timeout_sec = 10
+tool_timeout_sec = 20

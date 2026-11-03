@@ -1,0 +1,18 @@
+{
+  "archive": {
+    "change": "hourly-forecast",
+    "archivedAs": "2026-10-29-hourly-forecast",
+    "path": "/home/boyarin/ITMOv2/practices/practice_05/weather/openspec/changes/archive/2026-10-29-hourly-forecast",
+    "specsUpdated": true,
+    "totals": {
+      "added": 5,
+      "modified": 0,
+      "removed": 0,
+      "renamed": 0
+    }
+  },
+  "root": {
+    "path": "/home/boyarin/ITMOv2/practices/practice_05/weather",
+    "source": "nearest"
+  }
+}

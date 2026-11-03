@@ -1,0 +1,306 @@
+{
+  "time": "2026-10-28T22:30:13.897Z",
+  "skill": "weather-state-check",
+  "checks": [
+    {
+      "input": {
+        "code": 0,
+        "day": 1
+      },
+      "expected": {
+        "kind": "clear",
+        "daytime": "День",
+        "icon": "☀️"
+      },
+      "actual": {
+        "kind": "clear",
+        "label": "Ясно",
+        "daytime": "День",
+        "icon": "☀️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 0,
+        "day": 0
+      },
+      "expected": {
+        "kind": "clear",
+        "daytime": "Ночь",
+        "icon": "🌙"
+      },
+      "actual": {
+        "kind": "clear",
+        "label": "Ясно",
+        "daytime": "Ночь",
+        "icon": "🌙"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 1,
+        "day": 1
+      },
+      "expected": {
+        "kind": "clear"
+      },
+      "actual": {
+        "kind": "clear",
+        "label": "Ясно",
+        "daytime": "День",
+        "icon": "☀️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 2,
+        "day": 1
+      },
+      "expected": {
+        "kind": "cloudy"
+      },
+      "actual": {
+        "kind": "cloudy",
+        "label": "Облачно",
+        "daytime": "День",
+        "icon": "☁️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 3,
+        "day": 0
+      },
+      "expected": {
+        "kind": "cloudy",
+        "daytime": "Ночь"
+      },
+      "actual": {
+        "kind": "cloudy",
+        "label": "Облачно",
+        "daytime": "Ночь",
+        "icon": "☁️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 45,
+        "day": 1
+      },
+      "expected": {
+        "kind": "fog"
+      },
+      "actual": {
+        "kind": "fog",
+        "label": "Туман",
+        "daytime": "День",
+        "icon": "🌫️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 48,
+        "day": 0
+      },
+      "expected": {
+        "kind": "fog"
+      },
+      "actual": {
+        "kind": "fog",
+        "label": "Туман",
+        "daytime": "Ночь",
+        "icon": "🌫️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 51,
+        "day": 1
+      },
+      "expected": {
+        "kind": "rain"
+      },
+      "actual": {
+        "kind": "rain",
+        "label": "Дождь",
+        "daytime": "День",
+        "icon": "🌧️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 57,
+        "day": 0
+      },
+      "expected": {
+        "kind": "rain"
+      },
+      "actual": {
+        "kind": "rain",
+        "label": "Дождь",
+        "daytime": "Ночь",
+        "icon": "🌧️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 61,
+        "day": 1
+      },
+      "expected": {
+        "kind": "rain"
+      },
+      "actual": {
+        "kind": "rain",
+        "label": "Дождь",
+        "daytime": "День",
+        "icon": "🌧️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 67,
+        "day": 0
+      },
+      "expected": {
+        "kind": "rain"
+      },
+      "actual": {
+        "kind": "rain",
+        "label": "Дождь",
+        "daytime": "Ночь",
+        "icon": "🌧️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 82,
+        "day": 1
+      },
+      "expected": {
+        "kind": "rain"
+      },
+      "actual": {
+        "kind": "rain",
+        "label": "Дождь",
+        "daytime": "День",
+        "icon": "🌧️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 71,
+        "day": 0
+      },
+      "expected": {
+        "kind": "snow",
+        "daytime": "Ночь",
+        "icon": "❄️"
+      },
+      "actual": {
+        "kind": "snow",
+        "label": "Снег",
+        "daytime": "Ночь",
+        "icon": "❄️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 77,
+        "day": 1
+      },
+      "expected": {
+        "kind": "snow"
+      },
+      "actual": {
+        "kind": "snow",
+        "label": "Снег",
+        "daytime": "День",
+        "icon": "❄️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 86,
+        "day": 0
+      },
+      "expected": {
+        "kind": "snow"
+      },
+      "actual": {
+        "kind": "snow",
+        "label": "Снег",
+        "daytime": "Ночь",
+        "icon": "❄️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 95,
+        "day": 1
+      },
+      "expected": {
+        "kind": "storm"
+      },
+      "actual": {
+        "kind": "storm",
+        "label": "Гроза",
+        "daytime": "День",
+        "icon": "⛈️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 99,
+        "day": 0
+      },
+      "expected": {
+        "kind": "storm"
+      },
+      "actual": {
+        "kind": "storm",
+        "label": "Гроза",
+        "daytime": "Ночь",
+        "icon": "⛈️"
+      },
+      "status": "PASS"
+    },
+    {
+      "input": {
+        "code": 999,
+        "day": 1
+      },
+      "expected": {
+        "kind": "unknown"
+      },
+      "actual": {
+        "kind": "unknown",
+        "label": "Неизвестные условия",
+        "daytime": "День",
+        "icon": "❔"
+      },
+      "status": "PASS"
+    }
+  ],
+  "interactions": {
+    "status": "PASS",
+    "output": ""
+  },
+  "status": "PASS"
+}

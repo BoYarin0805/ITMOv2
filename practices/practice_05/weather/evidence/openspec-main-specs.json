@@ -1,0 +1,12 @@
+{
+  "specs": [
+    {
+      "id": "hourly-forecast",
+      "requirementCount": 5
+    }
+  ],
+  "root": {
+    "path": "/home/boyarin/ITMOv2/practices/practice_05/weather",
+    "source": "nearest"
+  }
+}

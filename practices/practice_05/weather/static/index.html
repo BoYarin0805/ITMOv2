@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f1"><meta name="description" content="Небо — погода сейчас, прогноз на сутки и живые пейзажи под настроение неба.">
+  <title>Небо — погода в движении</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
+  <script src="/weather-state.js" defer></script><script src="/scene.js" defer></script><script src="/favorites.js" defer></script><script src="/app.js" defer></script>
+</head>
+<body>
+<div class="app-shell">
+  <header class="site-header"><a href="/" class="brand" aria-label="Небо — главная"><span class="brand-symbol" aria-hidden="true">◒</span> небо<span class="brand-dot">.</span></a><p class="tagline">Каждый день — своё небо</p><a class="header-link" href="/tools.html">О проекте и инструментах ↗</a></header>
+  <main>
+    <h1 class="sr-only">Погода сейчас и почасовой прогноз</h1>
+    <div class="weather-layout">
+      <section class="weather-stage" id="landscape" aria-label="Погодный пейзаж">
+        <video id="bg-video" class="landscape-video" autoplay muted loop playsinline poster="/media/autumn.jpg" aria-hidden="true"><source src="/media/autumn.webm" type="video/webm"><source src="/media/autumn.mp4" type="video/mp4"></video>
+        <div class="landscape-shade"></div><div id="atmosphere" class="atmosphere" aria-hidden="true"></div>
+        <div class="stage-top"><span class="live-pill"><i></i> <span id="landscape-label">Погода в движении</span></span><button id="motion-toggle" class="glass-button" type="button" aria-pressed="false" aria-label="Приостановить анимацию">Пауза</button></div>
+        <p id="status" class="stage-status" role="status" aria-live="polite">Загружаем погоду…</p>
+        <section id="weather" class="current-weather" aria-labelledby="city-title" hidden>
+          <p class="overline">СЕЙЧАС В ГОРОДЕ</p><div class="city-heading"><h2 id="city-title"></h2><span id="daytime" class="daytime"></span></div>
+          <p id="temperature" class="temperature"></p><p id="description" class="weather-description"></p>
+          <dl class="weather-metrics"><div><dt>Ощущается</dt><dd id="feels"></dd></div><div><dt>Влажность</dt><dd id="humidity"></dd></div><div><dt>Ветер</dt><dd id="wind"></dd></div></dl>
+          <p class="updated">Данные на <time id="updated"></time> · <span id="timezone"></span></p>
+        </section>
+        <div id="scene-output" class="scene-card" role="status" aria-live="polite"><span id="scene-mode" class="scene-mode">Реальные данные</span><div class="scene-heading"><span id="scene-icon" aria-hidden="true">◌</span><strong id="scene-label">Ожидание погоды</strong></div><p id="scene-info">Пейзаж появится вместе с погодой.</p></div>
+        <span class="illustration-note">Атмосферный пейзаж · не трансляция из города</span>
+      </section>
+      <aside class="control-panel" aria-label="Выбор города">
+        <div class="panel-heading"><span class="eyebrow">ВАША ГЕОГРАФИЯ</span><h2>Где вы сегодня?</h2><p>Найдите место, а мы покажем его небо.</p></div>
+        <form id="search-form"><label class="sr-only" for="search">Поиск города</label><div class="search-controls"><input id="search" name="q" type="search" minlength="2" maxlength="100" required placeholder="Город или населённый пункт" autocomplete="off"><button id="search-button" type="submit" aria-label="Найти город">⌕</button></div></form>
+        <p id="search-status" class="small-status" role="status" aria-live="polite"></p><ul id="search-results" class="search-results" aria-label="Найденные города"></ul>
+        <form id="weather-form"><label for="city">Выбранный город</label><div class="city-controls"><select id="city" name="city" disabled><option>Загрузка городов…</option></select><button id="refresh" type="submit" disabled aria-label="Обновить погоду">↻</button></div></form>
+        <div class="favorites-header"><h3>Близкие места</h3><button id="add-favorite" type="button" disabled>＋ В избранное</button></div><p id="favorites-status" class="small-status" role="status" aria-live="polite"></p><ul id="favorites-list" class="favorites-list" aria-label="Избранные города"></ul>
+        <details class="demo-controls"><summary>Примерить другое небо <span aria-hidden="true">＋</span></summary><p>Демонстрация меняет пейзаж, сохраняя реальные числа города.</p><label for="scenario">Погода и время суток</label><select id="scenario"><option value="live">Реальная погода</option><option value="clear-day">Демо: ясно днём</option><option value="clear-night">Демо: ясно ночью</option><option value="cloudy">Демо: облачно</option><option value="rain">Демо: дождь</option><option value="snow-night">Демо: снег ночью</option><option value="fog">Демо: туман</option><option value="storm">Демо: гроза</option></select><label for="season">Время года пейзажа</label><select id="season"><option value="auto">По сезону города</option><option value="spring">Весна</option><option value="summer">Лето</option><option value="autumn">Осень</option><option value="winter">Зима</option></select></details>
+      </aside>
+    </div>
+    <section class="forecast-panel" aria-labelledby="forecast-title"><div class="forecast-heading"><div><p class="eyebrow">ЧТО ПРИГОТОВИЛО НЕБО</p><h2 id="forecast-title">Ближайшие 24 часа</h2></div><button id="back-live" class="text-button" type="button">Сейчас ↗</button></div><div class="forecast-subline"><p id="forecast-status" role="status" aria-live="polite">Выберите город для прогноза.</p><button id="forecast-retry" type="button" class="text-button" hidden>Повторить</button></div><div id="forecast-hours" class="forecast-hours" aria-label="Почасовая погода"></div><p class="forecast-note">Время местное для выбранного города. Нажмите на час, чтобы увидеть его атмосферу.</p></section>
+  </main>
+  <footer class="site-footer"><span class="footer-brand">небо.</span><p>Чуть ближе к природе, даже в городе.</p><span>Погода: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · города: <a href="https://www.geonames.org/">GeoNames</a><br>Расчётные условия и прогноз · пейзажи Pexels</span></footer>
+</div>
+</body>
+</html>

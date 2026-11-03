@@ -1,0 +1,233 @@
+{
+  "time": "2026-10-28T22:23:51.451117+00:00",
+  "source": "real Open-Meteo HTTP responses",
+  "status": "PASS",
+  "responses": {
+    "/api/weather?city=spb": {
+      "status": 200,
+      "data": {
+        "city": {
+          "id": "spb",
+          "name": "Санкт-Петербург",
+          "latitude": 59.94,
+          "longitude": 30.31
+        },
+        "current": {
+          "temperature_2m": 5.8,
+          "apparent_temperature": 3.0,
+          "relative_humidity_2m": 90,
+          "weather_code": 0,
+          "wind_speed_10m": 2.7,
+          "is_day": 0,
+          "time": "2026-10-29T01:15",
+          "description": "Ясно"
+        },
+        "units": {
+          "time": "iso8601",
+          "interval": "seconds",
+          "temperature_2m": "°C",
+          "apparent_temperature": "°C",
+          "relative_humidity_2m": "%",
+          "weather_code": "wmo code",
+          "wind_speed_10m": "m/s",
+          "is_day": ""
+        },
+        "timezone": "Europe/Moscow",
+        "source": {
+          "name": "Open-Meteo",
+          "url": "https://open-meteo.com/"
+        }
+      }
+    },
+    "/api/forecast?city=spb": {
+      "status": 200,
+      "data": {
+        "hours": [
+          {
+            "timestamp": 1793228400,
+            "time": "2026-10-29T02:00+03:00",
+            "temperature_2m": 5.6,
+            "weather_code": 0,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793232000,
+            "time": "2026-10-29T03:00+03:00",
+            "temperature_2m": 5.5,
+            "weather_code": 1,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793235600,
+            "time": "2026-10-29T04:00+03:00",
+            "temperature_2m": 5.8,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793239200,
+            "time": "2026-10-29T05:00+03:00",
+            "temperature_2m": 6.1,
+            "weather_code": 2,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793242800,
+            "time": "2026-10-29T06:00+03:00",
+            "temperature_2m": 6.2,
+            "weather_code": 2,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793246400,
+            "time": "2026-10-29T07:00+03:00",
+            "temperature_2m": 6.5,
+            "weather_code": 2,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793250000,
+            "time": "2026-10-29T08:00+03:00",
+            "temperature_2m": 7.2,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793253600,
+            "time": "2026-10-29T09:00+03:00",
+            "temperature_2m": 7.1,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793257200,
+            "time": "2026-10-29T10:00+03:00",
+            "temperature_2m": 7.2,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793260800,
+            "time": "2026-10-29T11:00+03:00",
+            "temperature_2m": 7.9,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793264400,
+            "time": "2026-10-29T12:00+03:00",
+            "temperature_2m": 8.4,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793268000,
+            "time": "2026-10-29T13:00+03:00",
+            "temperature_2m": 8.4,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793271600,
+            "time": "2026-10-29T14:00+03:00",
+            "temperature_2m": 8.5,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793275200,
+            "time": "2026-10-29T15:00+03:00",
+            "temperature_2m": 8.9,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793278800,
+            "time": "2026-10-29T16:00+03:00",
+            "temperature_2m": 9.0,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793282400,
+            "time": "2026-10-29T17:00+03:00",
+            "temperature_2m": 8.9,
+            "weather_code": 3,
+            "is_day": 1
+          },
+          {
+            "timestamp": 1793286000,
+            "time": "2026-10-29T18:00+03:00",
+            "temperature_2m": 8.8,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793289600,
+            "time": "2026-10-29T19:00+03:00",
+            "temperature_2m": 8.3,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793293200,
+            "time": "2026-10-29T20:00+03:00",
+            "temperature_2m": 7.8,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793296800,
+            "time": "2026-10-29T21:00+03:00",
+            "temperature_2m": 7.5,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793300400,
+            "time": "2026-10-29T22:00+03:00",
+            "temperature_2m": 7.4,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793304000,
+            "time": "2026-10-29T23:00+03:00",
+            "temperature_2m": 7.3,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793307600,
+            "time": "2026-10-30T00:00+03:00",
+            "temperature_2m": 7.4,
+            "weather_code": 3,
+            "is_day": 0
+          },
+          {
+            "timestamp": 1793311200,
+            "time": "2026-10-30T01:00+03:00",
+            "temperature_2m": 7.6,
+            "weather_code": 3,
+            "is_day": 0
+          }
+        ],
+        "timezone": "Europe/Moscow",
+        "units": {
+          "temperature_2m": "°C"
+        },
+        "updated": "2026-10-29T01:15+03:00",
+        "city": {
+          "id": "spb",
+          "name": "Санкт-Петербург",
+          "latitude": 59.94,
+          "longitude": 30.31
+        },
+        "source": {
+          "name": "Open-Meteo",
+          "url": "https://open-meteo.com/"
+        }
+      }
+    }
+  }
+}
