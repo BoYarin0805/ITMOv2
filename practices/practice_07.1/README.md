@@ -39,3 +39,21 @@
 | 3 | Повторный `/make_ai_review` к уже проверенному PR не запускает ревью — видно в Executions | 3 |
 | 4 | Комментарии публикуются точечно, к каждому блоку изменённого кода — видно в тестовом PR | 5 |
 | | **Итого** | **12** |
+
+## Результаты выполнения
+
+[Экспорт финального сценария n8n](workflow.json) · [Тестовый PR #1](https://github.com/BoYarin0805/n8n-review-test/pull/1) · [Комментарии к строкам diff](https://github.com/BoYarin0805/n8n-review-test/pull/1/files)
+
+| Критерий | Результат | Подтверждение |
+|---|---|---|
+| Две модели | При открытии PR отработала `deepseek-flash`. Команда `/make_other_ai_review` запустила `deepseek-v4-pro`. | [Основная модель, запуск #5383](evidence/01-main-model-execution.png) · [Вторая модель, запуск #5384](evidence/01-other-model-execution.png) |
+| Запись в Data Table | После публикации ревью сценарий получил ID PR из GitHub и записал `pr_id = 5405480422` и `pr_number = 1` в `reviewed_prs`. | [Ревью в PR](evidence/02-review-comment.png) · [Строка в таблице](evidence/02-reviewed-prs-table.png) · [Запуск #5404](evidence/02-upsert-execution.png) |
+| Дедупликация | Повторный `/make_ai_review` для PR #1 остановился на проверке таблицы до скачивания diff и вызова модели. | [Запуск #5445](evidence/03-duplicate-review-skipped.png) |
+| Комментарии к коду | `Split PR diff` выделил два блока. `Publish inline review` отправил замечания одним ревью с привязкой к файлу, строке и стороне diff. | [Ревью в PR](evidence/04-inline-review-demo.png) · [Строка `demo.py`](evidence/04-inline-demo-line.png) · [Строка `discount.py`](evidence/04-inline-discount-line.png) · [Запуск #5516](evidence/04-inline-review-execution.png) |
+
+### Повторный запуск в n8n
+
+1. Импортируйте `workflow.json` и привяжите свои учётные данные GitHub и DeepSeek. Для моделей используется тип OpenAI с Base URL `https://api.deepseek.com`.
+2. Создайте в проекте n8n таблицу `reviewed_prs` со столбцами `pr_id` (String) и `pr_number` (Number). Выберите её в `If row does not exist` и `Upsert row(s)`.
+3. Укажите свой тестовый репозиторий в `PR Trigger1`. При конфликте адреса вебхука создайте новый GitHub Trigger с событиями **Pull Request** и **Issue Comment**, дайте ему имя `PR Trigger1` и подключите к первому `If`.
+4. Опубликуйте сценарий, откройте тестовый PR и проверьте комментарии во вкладке **Files changed**. Для вызова второй модели отправьте `/make_other_ai_review` во вкладке **Conversation**.

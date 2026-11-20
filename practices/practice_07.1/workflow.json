@@ -1,0 +1,622 @@
+{
+  "name": "Practice 7.1 — AI Code Review",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api.github.com/repos/{{ $json.body.repository.full_name }}/pulls/{{ $json.body.pull_request?.number ?? $json.body.issue?.number }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.diff"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "768d408b-40a3-4ac5-afdf-083655d4c67e",
+      "name": "Get file's PR info",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -48,
+        -96
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "deepseek-flash",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "d12c0231-43b7-4621-91bc-8f92c85cab61",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        544,
+        112
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "6bk5zoYGt3xtP4G4",
+          "name": "OpenAI account 61"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a senior Python developer.\n\nСделай code review ТОЛЬКО изменённых строк в diff.\nНайди:\n\t•\tбаги\n\t•\tпроблемы безопасности\n\t•\tрегрессии\n\t•\tпроблемы производительности\n\t•\tнарушения best practices\n\nДай конкретные рекомендации и примеры исправлений.\n\n{{ $json.data }}",
+        "options": {
+          "systemMessage": ""
+        }
+      },
+      "id": "99f5ae51-1f46-4fba-a5aa-4c82c9bba43c",
+      "name": "Code Review Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        576,
+        -96
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "90f3fdc1-60af-4cd7-8710-046bef67e449",
+              "leftValue": "={{ ($json.body.action === 'opened' && !!$json.body.pull_request)\n   || ($json.body.action === 'created'\n       && !!$json.body.issue?.pull_request\n       && ['/make_ai_review', '/make_other_ai_review'].includes($json.body.comment?.body?.trim())) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -448,
+        -96
+      ],
+      "id": "fa236575-0f9d-4fe7-9740-a8e0b1447ccc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "38c223e9-efff-49a3-baff-787e3b019842",
+              "leftValue": "={{ $('PR Trigger1').first().json.body.comment?.body?.trim() === '/make_other_ai_review' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        352,
+        -96
+      ],
+      "id": "997fe721-1c85-4475-a2f5-25e68ddf6fde",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "deepseek-v4-pro",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "5854b0d0-91cc-4174-9936-c6fd95431890",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        544,
+        -240
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "6bk5zoYGt3xtP4G4",
+          "name": "OpenAI account 61"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a senior Python developer.\n\nСделай code review ТОЛЬКО изменённых строк в diff.\nНайди:\n\t•\tбаги\n\t•\tпроблемы безопасности\n\t•\tрегрессии\n\t•\tпроблемы производительности\n\t•\tнарушения best practices\n\nДай конкретные рекомендации и примеры исправлений.\n\n{{ $json.data }}",
+        "options": {
+          "systemMessage": ""
+        }
+      },
+      "id": "367de5f0-77f8-4f47-99c5-78fcb43dd6aa",
+      "name": "Code Review Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        576,
+        -448
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "owner": {
+          "__rl": true,
+          "value": "BoYarin0805",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8n-review-test",
+          "mode": "name"
+        },
+        "events": [
+          "pull_request",
+          "issue_comment"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.githubTrigger",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        -96
+      ],
+      "id": "3b22824f-2d4a-4597-a246-3c3dc1b082b4",
+      "name": "PR Trigger1",
+      "webhookId": "dd76f7f9-077f-4483-8491-f3816ee44877",
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.pull_request_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "a2f1bbf8-2eac-4da5-8365-8328ea356c92",
+      "name": "Get PR metadata",
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PC8mv2VQBmSTkpW5",
+          "mode": "list",
+          "cachedResultName": "reviewed_prs",
+          "cachedResultUrl": "/projects/e3RwKZvSBfV91HsQ/datatables/PC8mv2VQBmSTkpW5"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "pr_id",
+              "keyValue": "={{ $json.id.toString() }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "pr_id": "={{ $json.id.toString() }}",
+            "pr_number": "={{ $json.number }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "pr_id",
+              "displayName": "pr_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pr_number",
+              "displayName": "pr_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        -96
+      ],
+      "id": "33a3fac2-a87a-4980-8af8-6b19dda7ccdb",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "7047b8ae-497e-4689-be4d-535e0de8a230",
+              "leftValue": "={{ $json.body.comment?.body?.trim() === '/make_ai_review' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -224,
+        -96
+      ],
+      "id": "af2aeb58-7e72-498c-be65-f451699a7716",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "rowNotExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PC8mv2VQBmSTkpW5",
+          "mode": "list",
+          "cachedResultName": "reviewed_prs",
+          "cachedResultUrl": "/projects/e3RwKZvSBfV91HsQ/datatables/PC8mv2VQBmSTkpW5"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "pr_number",
+              "keyValue": "={{ $json.body.issue.number }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        64
+      ],
+      "id": "6e30533e-cca2-4984-a85c-9215fd8ff53d",
+      "name": "If row does not exist"
+    },
+    {
+      "parameters": {
+        "jsCode": "const diff = $input.first().json.data;\nif (typeof diff !== 'string') {\n  throw new Error('Expected the GitHub diff as text in data');\n}\n\nfunction readPath(header) {\n  const path = header.slice(4).split('\\t', 1)[0];\n  if (path === '/dev/null') return null;\n  if (!path.startsWith('\"')) return path.slice(2);\n\n  const escapes = {\n    a: '\\x07', b: '\\b', t: '\\t', n: '\\n', v: '\\v', f: '\\f', r: '\\r',\n    '\"': '\"', '\\\\': '\\\\',\n  };\n  const encodedPath = path.slice(1, -1).replace(/%/g, '%25')\n    .replace(/\\\\([0-7]{3}|.)/g, (_, code) => {\n      if (code.length === 3) {\n        return '%' + parseInt(code, 8).toString(16).padStart(2, '0');\n      }\n      return encodeURIComponent(escapes[code] ?? code);\n    });\n  return decodeURIComponent(encodedPath).slice(2);\n}\n\nconst items = [];\nlet oldPath = null;\nlet newPath = null;\nlet hunk = null;\n\nfunction finishHunk() {\n  if (!hunk) return;\n  const path = newPath ?? oldPath;\n  const location = hunk.firstAddition ?? hunk.firstDeletion;\n  if (path && location) {\n    items.push({\n      json: {\n        anchor: { path, ...location },\n        data: ['File: ' + path, ...hunk.lines].join('\\n'),\n      },\n      pairedItem: { item: 0 },\n    });\n  }\n  hunk = null;\n}\n\nfor (const line of diff.split(/\\r?\\n/)) {\n  if (line.startsWith('diff --git ')) {\n    finishHunk();\n    oldPath = null;\n    newPath = null;\n    continue;\n  }\n\n  const header = /^@@ -(\\d+)(?:,\\d+)? \\+(\\d+)(?:,\\d+)? @@/.exec(line);\n  if (header) {\n    finishHunk();\n    hunk = { oldLine: Number(header[1]), newLine: Number(header[2]), lines: [line] };\n    continue;\n  }\n\n  if (!hunk) {\n    if (line.startsWith('--- ')) oldPath = readPath(line);\n    if (line.startsWith('+++ ')) newPath = readPath(line);\n    continue;\n  }\n\n  hunk.lines.push(line);\n  if (line.startsWith('+')) {\n    hunk.firstAddition ??= { line: hunk.newLine, side: 'RIGHT' };\n    hunk.newLine += 1;\n  } else if (line.startsWith('-')) {\n    hunk.firstDeletion ??= { line: hunk.oldLine, side: 'LEFT' };\n    hunk.oldLine += 1;\n  } else if (line.startsWith(' ')) {\n    hunk.oldLine += 1;\n    hunk.newLine += 1;\n  }\n}\nfinishHunk();\n\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -96
+      ],
+      "id": "352ac5ac-4a16-4258-a8b8-7cf27aa53f71",
+      "name": "Split PR diff"
+    },
+    {
+      "parameters": {
+        "jsCode": "const split = $('Split PR diff');\nconst hunks = split.all();\nconst output = $input.all();\nif (hunks.length === 0 || output.length !== hunks.length) {\n  throw new Error('Expected one review comment for each diff hunk');\n}\n\nconst seen = new Set();\nconst comments = output.map((item, index) => {\n  const { path, line, side } = split.itemMatching(index).json.anchor;\n  const body = item.json.output?.trim();\n  if (!body) {\n    throw new Error('The model returned an empty review for ' + path + ':' + line);\n  }\n\n  const key = JSON.stringify([path, line, side]);\n  if (seen.has(key)) {\n    throw new Error('Multiple review items point to the same diff line');\n  }\n  seen.add(key);\n  return { path, line, side, body };\n});\n\nconst event = $('PR Trigger1').first().json.body;\nconst repo = event.repository.full_name;\nconst number = event.pull_request?.number ?? event.issue?.number;\nconst model = event.comment?.body?.trim() === '/make_other_ai_review'\n  ? 'deepseek-v4-pro'\n  : 'deepseek-flash';\n\nreturn [{\n  json: {\n    reviewUrl: 'https://api.github.com/repos/' + repo + '/pulls/' + number + '/reviews',\n    review: {\n      event: 'COMMENT',\n      body: 'AI-ревью по блокам diff · ' + model + ' · комментариев: ' + comments.length,\n      comments,\n    },\n  },\n  pairedItem: { item: 0 },\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -96
+      ],
+      "id": "6db1e695-cbcd-4e43-b011-78ec11b04da7",
+      "name": "Build inline review"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.reviewUrl }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.review }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        -96
+      ],
+      "id": "a1b2bc9c-f110-45f4-a84a-e15075159ad0",
+      "name": "Publish inline review",
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get file's PR info": {
+      "main": [
+        [
+          {
+            "node": "Split PR diff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Code Review Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Review Agent1": {
+      "main": [
+        [
+          {
+            "node": "Build inline review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code Review Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code Review Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Code Review Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Review Agent": {
+      "main": [
+        [
+          {
+            "node": "Build inline review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PR Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PR metadata": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "If row does not exist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get file's PR info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row does not exist": {
+      "main": [
+        [
+          {
+            "node": "Get file's PR info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build inline review": {
+      "main": [
+        [
+          {
+            "node": "Publish inline review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split PR diff": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish inline review": {
+      "main": [
+        [
+          {
+            "node": "Get PR metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ee39c164-db71-45c9-8e58-ed872aabc7a2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "68dbbb4e8fa686c3fd4e9982ade6836edb66976f207553e7ac22df961581c78c"
+  },
+  "nodeGroups": [],
+  "id": "fbWbZ6vhNEtOkTiY",
+  "tags": []
+}
