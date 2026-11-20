@@ -1,0 +1,14 @@
+{
+  "name": "weather-practice-eight",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "sh scripts/check.sh && npm run test:browser",
+    "test:browser": "playwright test",
+    "test:live": "LIVE_WEATHER=1 playwright test live.spec.js",
+    "capture:evidence": "CAPTURE_EVIDENCE=1 playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}
