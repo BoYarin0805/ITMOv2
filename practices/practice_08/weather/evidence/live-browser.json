@@ -1,0 +1,22 @@
+{
+  "source": "Open-Meteo",
+  "timestamp": "2026-11-20T08:35:15.107Z",
+  "city": "Выборг, Ленинградская область, Россия",
+  "observedAt": "2026-11-20T11:30",
+  "timezone": "Europe/Moscow",
+  "forecastHours": 24,
+  "responses": [
+    {
+      "path": "/api/search",
+      "status": 200
+    },
+    {
+      "path": "/api/weather",
+      "status": 200
+    },
+    {
+      "path": "/api/forecast",
+      "status": 200
+    }
+  ]
+}

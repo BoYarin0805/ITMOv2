@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Демонстрация инструментов — Погода</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/tools.js" defer></script>
+</head>
+<body><main>
+  <a href="/">← Вернуться к погоде</a>
+  <h1>Демонстрация инструментов</h1>
+  <p>Результаты фактических запусков. Страница обновляется каждые 3 секунды.</p>
+  <p id="evidence-status" role="status"></p>
+  <section aria-labelledby="skill-title"><h2 id="skill-title">Skill: погодные состояния</h2>
+    <p id="skill-summary">Ожидание данных…</p><details><summary>Сценарии и результаты</summary><pre id="skill-details"></pre></details></section>
+  <section aria-labelledby="mcp-title"><h2 id="mcp-title">MCP: реальная погода</h2>
+    <p id="mcp-summary">Ожидание данных…</p><p id="mcp-weather"></p>
+    <details><summary>Вызовы инструментов и ошибочный ввод</summary><pre id="mcp-details"></pre></details></section>
+  <section aria-labelledby="hook-title"><h2 id="hook-title">Post-edit hook: автоматические проверки</h2>
+    <p>При работающем сервере изменение кода запускает тесты автоматически.</p>
+    <p id="checks-summary">Ожидание данных…</p>
+    <ol id="hook-history"></ol><details><summary>Вывод последней проверки</summary><pre id="checks-details"></pre></details></section>
+  <footer>Полная инструкция демонстрации: docs/DEMO.md в папке проекта.</footer>
+</main></body></html>

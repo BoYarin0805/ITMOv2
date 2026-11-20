@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Небо — прототип поиска города</title>
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="prototype.js" defer></script>
+</head>
+<body>
+  <div class="app-shell prototype-card">
+    <header class="site-header">
+      <a href="index.html" class="brand" aria-label="Небо — главная">
+        <span class="brand-symbol" aria-hidden="true">◒</span> небо<span class="brand-dot">.</span>
+      </a>
+    </header>
+    <main>
+      <div class="prototype-toolbar">
+        <h1>Прототип поиска города</h1>
+        <p>Введите «Выборг» и выберите результат или откройте нужное состояние. Данные в прототипе примерные.</p>
+        <nav class="prototype-states" aria-label="Состояния прототипа">
+          <button type="button" class="btn btn-outline-secondary" data-view="start" aria-pressed="true">Старт</button>
+          <button type="button" class="btn btn-outline-secondary" data-view="entry" aria-pressed="false">Ввод</button>
+          <button type="button" class="btn btn-outline-secondary" data-view="loading" aria-pressed="false">Загрузка</button>
+          <button type="button" class="btn btn-outline-secondary" data-view="results" aria-pressed="false">Результаты</button>
+          <button type="button" class="btn btn-outline-secondary" data-view="empty" aria-pressed="false">Пустой ответ</button>
+          <button type="button" class="btn btn-outline-secondary" data-view="error" aria-pressed="false">Ошибка</button>
+          <button type="button" class="btn btn-outline-secondary" data-view="selected" aria-pressed="false">Погода</button>
+        </nav>
+      </div>
+      <div class="weather-layout">
+        <section class="weather-stage" aria-labelledby="prototype-city">
+          <img class="landscape-video" src="media/autumn.jpg" alt="">
+          <div class="landscape-shade"></div>
+          <div class="stage-top"><span class="live-pill"><i></i> Осень · день</span></div>
+          <div class="current-weather">
+            <p class="overline">СЕЙЧАС В ГОРОДЕ</p>
+            <div class="city-heading"><h2 id="prototype-city">Санкт-Петербург</h2><span class="daytime">День</span></div>
+            <p class="temperature" id="prototype-temperature">12 °C</p>
+            <p class="weather-description">Переменная облачность</p>
+          </div>
+          <span class="illustration-note">Атмосферный пейзаж · не трансляция из города</span>
+        </section>
+        <aside class="control-panel card" aria-label="Выбор города">
+          <div class="panel-heading"><span class="eyebrow">ВАША ГЕОГРАФИЯ</span><h2>Где вы сегодня?</h2><p>Найдите место, а мы покажем его небо.</p></div>
+          <form id="prototype-search" class="city-search" aria-busy="false" novalidate>
+            <label class="form-label" for="prototype-query">Поиск города</label>
+            <div class="input-group">
+              <input id="prototype-query" name="q" type="search" required minlength="2" maxlength="100"
+                class="form-control" placeholder="Например, Выборг" aria-describedby="prototype-hint prototype-status">
+              <button id="prototype-submit" type="submit" class="btn btn-primary search-submit">Найти</button>
+            </div>
+            <p class="form-text" id="prototype-hint">От 2 до 100 символов.</p>
+          </form>
+          <p id="prototype-status" class="search-feedback" data-state="idle" role="status">
+            <span id="prototype-spinner" class="spinner-border spinner-border-sm" aria-hidden="true" hidden></span>
+            <span id="prototype-message"></span>
+          </p>
+          <ul class="list-group search-results" aria-label="Найденные города" id="prototype-results" hidden>
+            <li><button type="button" class="list-group-item list-group-item-action" id="prototype-result">Выборг, Ленинградская область, Россия</button></li>
+          </ul>
+          <label for="prototype-selected-city">Выбранный город</label>
+          <output id="prototype-selected-city" class="form-control">Санкт-Петербург</output>
+        </aside>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+Практика 8 · Небо · 2026-11-20T11:35:15+03:00
+
+npm test
+Ran 29 tests in 0.637s
+OK
+# tests 10
+# pass 10
+# fail 0
+  13 passed (7.4s)
+
+npm run test:live
+  ✓  1 tests/browser/live.spec.js:11:1 › search for a city and load its current weather and 24 hours from Open-Meteo (1.0s)
+  1 passed (1.6s)
+
+Контроль теста на дублирование
+В отдельной копии удалена строка if (query === pendingSearch) return;
+    - Expected  - 0
+    + Received  + 1
+
+      Array [
+        "Выборг",
+    +   "Выборг",
+      ]
+
+      220 |   await expect(button).toBeEnabled();
+      221 |   await expect(page.locator("#search-form")).toHaveAttribute("aria-busy", "false");
+    > 222 |   expect(queries).toEqual(["Выборг"]);
+          |                   ^
+Оригинальный код после этой проверки прошёл полный npm test.
