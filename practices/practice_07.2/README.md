@@ -67,5 +67,56 @@
 
 Набор инструментов для решения задачи, как и референсное решение, не определены. Вы можете самостоятельно их определить, но при условии того, что n8n является ядром автоматизации
 
+## Сценарии n8n на 16 баллов
 
+JSON экспортированы из опубликованных сценариев. Импортируйте их по отдельности в один проект n8n через **Import → From File**. При повторном импорте выберите свои учётные данные и заполните **To** в узле **Send weekly email**.
 
+| Файл | Назначение |
+|---|---|
+| [workflow-classifier.json](workflow-classifier.json) | Принимает `title` и `body`. Basic LLM Chain использует `deepseek-flash`, а Structured Output Parser проверяет поля `type` и `confidence`. |
+| [workflow-issues.json](workflow-issues.json) | Принимает события `issues.opened`, вызывает классификатор и через Switch добавляет один из четырёх лейблов. |
+| [workflow-weekly-report.json](workflow-weekly-report.json) | Собирает данные за семь дней, сохраняет статистику, рассчитывает Δ, генерирует AI-аннотацию и отправляет HTML-письмо через Gmail. |
+
+### GitHub Issues и классификатор
+
+1. Импортируйте и опубликуйте `Practice 7.2 — Issue Classifier`. В `DeepSeek Flash` выберите credential OpenAI с ключом DeepSeek и Base URL `https://api.deepseek.com`.
+2. Импортируйте `Practice 7.2 — GitHub Issues`. В `Call issue classifier` выберите `Practice 7.2 — Issue Classifier`. Проверьте, что `title` получает `{{ $json.body.issue.title }}`, а `body` — `{{ $json.body.issue.body ?? '' }}`.
+3. В `GitHub Issues Trigger` и узлах `Add …` выберите credential GitHub для тестового репозитория. Для fine-grained токена включите **Webhooks → Read and write** и **Issues → Read and write**. Если используете токен из 7.1, добавьте ему право **Issues**. В шаблоне указан `BoYarin0805/n8n-review-test`. Создайте в репозитории лейблы `bug`, `task`, `feature` и `needs-triage`, если их ещё нет. [Лейблы тестового репозитория](https://github.com/BoYarin0805/n8n-review-test/labels)
+4. Опубликуйте основной сценарий и создайте четыре новых Issue.
+
+| Заголовок | Описание | Ожидаемый лейбл |
+|---|---|---|
+| `Налог вычитается в total_with_tax` | При цене 100 и налоге 20 функция возвращает 80. Ожидается 120. | `bug` |
+| `Обновить README с командами локального запуска` | Нужно уточнить существующую инструкцию установки и запуска тестов. | `task` |
+| `Добавить экспорт расчёта цены в CSV` | Нужна новая кнопка, которая скачивает итог расчёта в CSV. | `feature` |
+| `Помогите` | Что-то происходит. | `needs-triage` |
+
+Проверьте лейблы в GitHub. В Executions сохраните результаты вызова sub-workflow с `type` и `confidence` и выбранную ветку Switch. При неизвестном типе или уверенности ниже `0.8` сценарий добавляет `needs-triage` и завершает обработку без комментария.
+
+### Еженедельный отчёт и проверка Δ
+
+1. Импортируйте `Practice 7.2 — Weekly Issue Report`. В четырёх HTTP-нодах выберите тот же credential GitHub, в `DeepSeek Flash` — DeepSeek, а в `Send weekly email` подключите Gmail и заполните поле **To** своим email.
+2. Расписание `0 9 * * MON` настроено на понедельник в 09:00 в часовом поясе `Europe/Moscow`. Проверьте часовой пояс в настройках workflow после импорта и опубликуйте сценарий для запуска по расписанию. Для ручной проверки запустите `Test weekly email`, когда тестовые Issues уже созданы. Четыре запроса получают новые Issues, закрытые, обновлённые открытые и новые без лейблов. Наборы могут пересекаться.
+3. Первый запуск создаёт `weekly_issue_stats_72`. Чтобы сразу проверить сравнение с предыдущей неделей, можно заранее создать таблицу с двумя текстовыми столбцами `week_key` и `stats_json`. Возьмите `previous_week_key` из вывода `Report window` и добавьте строку с этим значением в `week_key`. В `stats_json` для демонстрации можно вставить:
+
+   ```json
+   {"metrics":{"opened":{"total":2},"closed":{"total":1},"active":{"total":1},"unlabeled":{"total":1}}}
+   ```
+
+4. Запустите `Test weekly email` с добавленной записью. В письме должны появиться четыре показателя с Δ, группировки по типам и авторам и блок **«AI-комментарий недели»**. В `weekly_issue_stats_72` будут две строки. Повторный запуск в ту же календарную неделю обновит текущую строку. Сохраните скриншоты успешного запуска, письма и таблицы.
+
+На 20 ноября 2026 года ключ предыдущей недели `2026-11-09`. При запуске в другую неделю используйте `previous_week_key`, который вернёт `Report window`.
+
+### Результаты проверки
+
+| № | Результат | Подтверждение |
+|---|---|---|
+| 1 | Issues #2, #3 и #4 получили метки `bug`, `task` и `feature`. | [Тестовый репозиторий](https://github.com/BoYarin0805/n8n-review-test/issues) · [Метка bug](evidence/01-issue-bug-label.png) · [Все три метки](evidence/02-issue-category-labels.png) |
+| 2 | Для #5 классификатор вернул `unknown` с уверенностью `0.2`. Запуск #5575 добавил `needs-triage` без комментария. | [Issue #5](evidence/03-issue-needs-triage.png) · [Запуск #5575](evidence/04-execution-needs-triage.png) |
+| 3 | Основной сценарий передал `title` и `body` в отдельный workflow и получил `type` и `confidence`. | [Вход и выход классификатора](evidence/05-classifier-output.png) |
+| 4 | Расписание задано для понедельника в 09:00. В ручном запуске за семь дней отработали четыре запроса, вернувшие четыре новых, ноль закрытых, четыре обновлённых открытых и ноль новых обращений без меток. | [Четыре запроса](evidence/06-weekly-github-requests.png) · [Запуск #5632](evidence/14-weekly-delta-execution.png) |
+| 5 | Среди новых обращений по одному `bug`, `task`, `feature` и `needs-triage`. Автор всех четырёх — `BoYarin0805`. | [Группировка в JSON](evidence/07-weekly-grouping.png) |
+| 6 | Запуск #5631 отправил HTML-отчёт с таблицами статистики. | [Узел Gmail](evidence/08-weekly-gmail-node.png) · [Запуск #5631](evidence/09-weekly-report-execution.png) · [Первое письмо](evidence/10-weekly-email-received.png) |
+| 7 | В `weekly_issue_stats_72` сохранена статистика недели с ключом `2026-11-16`. | [Сохранённая строка](evidence/11-weekly-statistics-saved.png) |
+| 8 | Добавлена тестовая строка с ключом `2026-11-09`. В повторном письме получены Δ `+2`, `−1`, `+3` и `−1` по четырём показателям в порядке строк таблицы. | [Две недели в Data Table](evidence/12-weekly-history-two-weeks.png) · [Письмо с Δ](evidence/13-weekly-email-delta-ai.png) |
+| 9 | DeepSeek сформировал блок «AI-комментарий недели» по показателям и Δ. В тексте отмечен рост числа обновлённых открытых обращений с 1 до 4. | [AI-комментарий в письме](evidence/13-weekly-email-delta-ai.png) · [Запуск #5632](evidence/14-weekly-delta-execution.png) |

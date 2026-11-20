@@ -1,0 +1,706 @@
+{
+  "name": "Practice 7.2 — Weekly Issue Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * MON"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -96
+      ],
+      "id": "4dba84a2-6726-4321-8f23-0e75334b98e6",
+      "name": "Monday at 09:00"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        128
+      ],
+      "id": "85b53054-19de-4bdf-ba0d-f8d76fbba632",
+      "name": "Test weekly email"
+    },
+    {
+      "parameters": {
+        "jsCode": "const end = $now.setZone('Europe/Moscow').startOf('second');\nconst start = end.minus({ days: 7 });\nconst startUtc = start.toUTC().toISO({ suppressMilliseconds: true });\nconst endUtc = end.toUTC().toISO({ suppressMilliseconds: true });\nconst range = startUtc + '..' + endUtc;\nconst repo = 'BoYarin0805/n8n-review-test';\nconst query = 'repo:' + repo + ' is:issue ';\n\nconst metrics = [\n  { key: 'opened', node: 'New issues', label: 'Новые', query: query + 'created:' + range },\n  { key: 'closed', node: 'Closed issues', label: 'Закрытые', query: query + 'is:closed closed:' + range },\n  { key: 'active', node: 'Updated open issues', label: 'Обновлённые открытые', query: query + 'is:open updated:' + range },\n  { key: 'unlabeled', node: 'New unlabeled issues', label: 'Новые без лейблов', query: query + 'no:label created:' + range },\n];\n\nreturn [{\n  json: {\n    repo,\n    from: start.toFormat('dd.MM.yyyy HH:mm'),\n    to: end.toFormat('dd.MM.yyyy HH:mm'),\n    from_iso: startUtc,\n    to_iso: endUtc,\n    week_key: end.startOf('week').toISODate(),\n    previous_week_key: end.startOf('week').minus({ weeks: 1 }).toISODate(),\n    metrics,\n  },\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "5bfff4c9-891e-4dd2-b976-41a9c25e01ea",
+      "name": "Report window"
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/issues",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $('Report window').first().json.metrics[0].query }}"
+            },
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !String($response.headers.link ?? '').includes('rel=\"next\"') }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 2200
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        464,
+        -16
+      ],
+      "id": "1ba1d009-cf1b-4e5d-816c-8a20f7fbf320",
+      "name": "New issues",
+      "executeOnce": true,
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/issues",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $('Report window').first().json.metrics[1].query }}"
+            },
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !String($response.headers.link ?? '').includes('rel=\"next\"') }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 2200
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        -16
+      ],
+      "id": "51a6e867-ae39-4e59-8866-247e3e7d929f",
+      "name": "Closed issues",
+      "executeOnce": true,
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/issues",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $('Report window').first().json.metrics[2].query }}"
+            },
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !String($response.headers.link ?? '').includes('rel=\"next\"') }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 2200
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        944,
+        -16
+      ],
+      "id": "bf0df5ff-6e20-4caa-a3da-52db488a4bb9",
+      "name": "Updated open issues",
+      "executeOnce": true,
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/issues",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $('Report window').first().json.metrics[3].query }}"
+            },
+            {
+              "name": "per_page",
+              "value": "100"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            }
+          ]
+        },
+        "options": {
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !String($response.headers.link ?? '').includes('rel=\"next\"') }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 2200
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        -16
+      ],
+      "id": "07558837-fad3-4cc8-b3d3-168e8f030a64",
+      "name": "New unlabeled issues",
+      "executeOnce": true,
+      "credentials": {
+        "githubApi": {
+          "id": "aO3g8PeqMG8RAYHj",
+          "name": "GitHub account 70"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const window = $('Report window').first().json;\nconst knownTypes = ['bug', 'task', 'feature', 'needs-triage'];\nconst values = {};\n\nfor (const metric of window.metrics) {\n  const pages = $(metric.node).all().flatMap(({ json }) => {\n    const body = json.body ?? json;\n    return Array.isArray(body) ? body : [body];\n  });\n\n  if (!pages.length || pages.some(page => !Array.isArray(page.items) || !Number.isInteger(page.total_count))) {\n    throw new Error('Unexpected GitHub response for ' + metric.node);\n  }\n\n  const observed = new Map();\n  for (const page of pages) {\n    for (const issue of page.items) {\n      observed.set(issue.id, issue);\n    }\n  }\n\n  const byType = Object.fromEntries([...knownTypes, 'unclassified'].map(type => [type, 0]));\n  const byAuthor = new Map();\n  for (const issue of observed.values()) {\n    const labels = (issue.labels ?? []).map(label =>\n      (typeof label === 'string' ? label : label.name)?.toLowerCase()\n    );\n    const type = knownTypes.find(name => labels.includes(name)) ?? 'unclassified';\n    const author = issue.user?.login ?? 'unknown';\n    byType[type] += 1;\n    byAuthor.set(author, (byAuthor.get(author) ?? 0) + 1);\n  }\n\n  const total = pages[0].total_count;\n  values[metric.key] = {\n    total,\n    observed: observed.size,\n    complete: observed.size === total && !pages.some(page => page.incomplete_results),\n    byType,\n    byAuthor: Object.fromEntries(byAuthor),\n  };\n}\n\nreturn [{\n  json: {\n    week_key: window.week_key,\n    previous_week_key: window.previous_week_key,\n    metrics: values,\n  },\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        -16
+      ],
+      "id": "1a617189-5970-4f3b-9bdf-e10ba069b7d5",
+      "name": "Group by type and author"
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "operation": "create",
+        "tableName": "weekly_issue_stats_72",
+        "columns": {
+          "column": [
+            {
+              "name": "week_key"
+            },
+            {
+              "name": "stats_json"
+            }
+          ]
+        },
+        "options": {
+          "createIfNotExists": true
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1664,
+        -16
+      ],
+      "id": "aff974c3-7f12-4bc2-8757-3a6917de083c",
+      "name": "Ensure weekly history"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "weekly_issue_stats_72"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "week_key",
+              "keyValue": "={{ $('Report window').first().json.previous_week_key }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1904,
+        -16
+      ],
+      "id": "39343ff2-f692-45c8-8a7b-444a03c82d20",
+      "name": "Read previous week",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const window = $('Report window').first().json;\nconst current = $('Group by type and author').first().json.metrics;\nconst priorRow = $input.first().json;\nconst previous = priorRow.stats_json ? JSON.parse(priorRow.stats_json).metrics : null;\nconst summary = window.metrics.map(metric => {\n  const currentMetric = current[metric.key];\n  const previousTotal = previous?.[metric.key]?.total;\n  const prior = Number.isInteger(previousTotal) && previousTotal >= 0 ? previousTotal : null;\n  return {\n    key: metric.key,\n    label: metric.label,\n    current: currentMetric.total,\n    previous: prior,\n    delta: prior === null ? null : currentMetric.total - prior,\n    complete: currentMetric.complete,\n  };\n});\n\nreturn [{\n  json: {\n    ...window,\n    current,\n    summary,\n    stats_json: JSON.stringify({\n      from: window.from_iso,\n      to: window.to_iso,\n      metrics: current,\n    }),\n  },\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2144,
+        -16
+      ],
+      "id": "0c36135b-4221-426b-b0eb-ab40a26a9ac7",
+      "name": "Compare weeks"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "weekly_issue_stats_72"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "week_key",
+              "keyValue": "={{ $json.week_key }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "week_key": "={{ $json.week_key }}",
+            "stats_json": "={{ $json.stats_json }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "week_key",
+              "displayName": "week_key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "stats_json",
+              "displayName": "stats_json",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2384,
+        -16
+      ],
+      "id": "0959f73c-b284-4d31-94bc-7cb9a32a5006",
+      "name": "Save weekly statistics"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ \"Напиши по-русски краткий AI-комментарий к недельному отчёту по GitHub Issues. Дай 2–3 предложения. Используй только факты из статистики, отметь наиболее заметные значения Δ. Если previous или delta равны null, скажи, что для сравнения нет данных. Не объясняй причины изменений без данных. Верни обычный текст без разметки.\" + '\\n\\n' + JSON.stringify($('Compare weeks').first().json.summary) }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        2624,
+        -16
+      ],
+      "id": "ceb69ff9-489d-41ce-9b2f-ad5b8acf6b4c",
+      "name": "AI week summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "const report = $('Compare weeks').first().json;\nconst answer = $input.first().json;\nconst aiComment = answer.text ?? answer.output;\nif (typeof aiComment !== 'string' || !aiComment.trim()) {\n  throw new Error('The AI summary returned no text');\n}\n\nfunction safe(value) {\n  const characters = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' };\n  return String(value).replace(/[&<>\"']/g, char => characters[char]);\n}\n\nconst cellStyle = 'border:1px solid #ddd;padding:6px 10px;text-align:left';\nfunction table(headers, rows) {\n  const head = headers.map(value => '<th style=\"' + cellStyle + '\">' + safe(value) + '</th>').join('');\n  const body = rows.map(row => {\n    const cells = row.map(value => '<td style=\"' + cellStyle + '\">' + safe(value) + '</td>').join('');\n    return '<tr>' + cells + '</tr>';\n  }).join('');\n  return '<table style=\"border-collapse:collapse\"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>';\n}\n\nfunction showDelta(delta) {\n  if (delta === null) return '—';\n  return delta > 0 ? '+' + delta : String(delta);\n}\n\nconst totals = report.summary.map(metric => [\n  metric.label, metric.current, metric.previous ?? '—', showDelta(metric.delta),\n]);\nconst types = ['bug', 'task', 'feature', 'needs-triage', 'unclassified'];\nconst byType = report.metrics.map(metric => [\n  metric.label,\n  ...types.map(type => report.current[metric.key].byType[type]),\n]);\n\nconst authors = new Set(report.metrics.flatMap(metric => Object.keys(report.current[metric.key].byAuthor)));\nconst authorRows = [...authors].map(author => [\n  author,\n  ...report.metrics.map(metric => report.current[metric.key].byAuthor[author] ?? 0),\n]);\nconst sum = row => row.slice(1).reduce((total, count) => total + count, 0);\nauthorRows.sort((left, right) => sum(right) - sum(left) || left[0].localeCompare(right[0]));\n\nconst limitations = report.metrics\n  .filter(metric => !report.current[metric.key].complete)\n  .map(metric => {\n    const data = report.current[metric.key];\n    return '<p>' + safe(metric.label) + '. Разбивка по типам и авторам включает '\n      + safe(data.observed) + ' из ' + safe(data.total) + ' результатов поиска.</p>';\n  })\n  .join('');\n\nconst html = [\n  '<div style=\"font-family:Arial,sans-serif;color:#202124;line-height:1.45\">',\n  '<h1>Еженедельный отчёт по GitHub Issues</h1>',\n  '<p>' + safe(report.repo) + ' · ' + safe(report.from) + ' — ' + safe(report.to) + ' (МСК)</p>',\n  '<h2>Статистика и изменение за неделю</h2>',\n  table(['Показатель', 'Текущий период', 'Предыдущий период', 'Δ'], totals),\n  '<h2>По типам</h2>',\n  table(['Показатель', 'bug', 'task', 'feature', 'needs-triage', 'Без типа'], byType),\n  '<h2>По авторам</h2>',\n  authorRows.length\n    ? table(['Автор', ...report.metrics.map(metric => metric.label)], authorRows.slice(0, 20))\n    : '<p>Учитываемых обращений за период нет.</p>',\n  authorRows.length > 20 ? '<p>Показаны 20 наиболее активных авторов.</p>' : '',\n  limitations,\n  '<h2>AI-комментарий недели</h2>',\n  '<p>' + safe(aiComment.trim()).replace(/\\r?\\n/g, '<br>') + '</p>',\n  '</div>',\n].join('');\n\nreturn [{\n  json: {\n    subject: 'GitHub Issues · ' + report.repo + ' · ' + report.to.slice(0, 10),\n    html,\n  },\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2864,
+        -16
+      ],
+      "id": "00b4cf44-7a1e-447b-b5f9-a6080d0ff9cf",
+      "name": "Build HTML email"
+    },
+    {
+      "parameters": {
+        "sendTo": "",
+        "subject": "={{ $json.subject }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3104,
+        -16
+      ],
+      "id": "748196c8-4f61-477e-8fc1-93c8a890bac5",
+      "name": "Send weekly email",
+      "webhookId": "76a1fec1-8ca3-4be9-96bc-dcd18ab44fe7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "rWYlR69Xs4AwZf3H",
+          "name": "Gmail account 18"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "id",
+          "value": "deepseek-flash"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2624,
+        208
+      ],
+      "id": "c29a9ee7-dc7b-4530-8198-0fbd86cb7f64",
+      "name": "DeepSeek Flash",
+      "credentials": {
+        "openAiApi": {
+          "id": "6bk5zoYGt3xtP4G4",
+          "name": "OpenAI account 61"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Monday at 09:00": {
+      "main": [
+        [
+          {
+            "node": "Report window",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test weekly email": {
+      "main": [
+        [
+          {
+            "node": "Report window",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI week summary",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report window": {
+      "main": [
+        [
+          {
+            "node": "New issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New issues": {
+      "main": [
+        [
+          {
+            "node": "Closed issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Closed issues": {
+      "main": [
+        [
+          {
+            "node": "Updated open issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Updated open issues": {
+      "main": [
+        [
+          {
+            "node": "New unlabeled issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New unlabeled issues": {
+      "main": [
+        [
+          {
+            "node": "Group by type and author",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Group by type and author": {
+      "main": [
+        [
+          {
+            "node": "Ensure weekly history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ensure weekly history": {
+      "main": [
+        [
+          {
+            "node": "Read previous week",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read previous week": {
+      "main": [
+        [
+          {
+            "node": "Compare weeks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare weeks": {
+      "main": [
+        [
+          {
+            "node": "Save weekly statistics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save weekly statistics": {
+      "main": [
+        [
+          {
+            "node": "AI week summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI week summary": {
+      "main": [
+        [
+          {
+            "node": "Build HTML email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build HTML email": {
+      "main": [
+        [
+          {
+            "node": "Send weekly email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timezone": "Europe/Moscow"
+  },
+  "versionId": "cd30f67f-81df-4d11-b12d-4398ae77209a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "68dbbb4e8fa686c3fd4e9982ade6836edb66976f207553e7ac22df961581c78c"
+  },
+  "nodeGroups": [],
+  "id": "bB559YCarKsvZEly",
+  "tags": []
+}
